@@ -1,11 +1,11 @@
 name: fl_utils
-description: A new Flutter package project.
+description: Common flutter utilities such as debounce extension, and more.
 version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=3.0.2 <4.0.0'
-  flutter: ">=1.17.0"
+  sdk: ^3.0.0
+  flutter: ^3.10.0
 
 dependencies:
   flutter:
