@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  pull_request_review:
+    types: [submitted, edited]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        flutter-version: [3.10.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Flutter v${{ matrix.flutter-version }} SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          flutter-version: ${{ matrix.flutter-version }}
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run tests with coverage
+        run: flutter test --coverage
+
+      # - name: Test with min 80% coverage
+      #   run: |
+      #     flutter test --coverage
+      #     dart pub global activate clean_coverage
+      #     clean_coverage clean coverage/lcov.info --exclusions "**/others/**"
+      #     dart pub global activate dlcov
+      #     dlcov -c 80
+
+      - name: Upload coverage as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-coverage
+          path: ./coverage/lcov.info
