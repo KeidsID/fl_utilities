@@ -1,6 +1,8 @@
 name: fl_utils
-description: Common flutter utilities such as debounce extension, and more.
-version: 0.0.1
+description:
+  "Simple flutter utilities such as shorthands extension on [BuildContext],
+  `debounce` extension on [ValueChanged],`SizedScrollableArea` widget, and more."
+version: 0.1.0
 homepage:
 
 environment:
