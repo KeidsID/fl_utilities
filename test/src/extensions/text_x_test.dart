@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fl_utilities/src/extensions/text_x.dart';
+import 'package:fl_utilities/fl_utilities.dart';
 
 void main() {
   group('TextX', () {
