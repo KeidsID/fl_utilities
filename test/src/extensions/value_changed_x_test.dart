@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:fl_utils/src/extensions/value_changed_x.dart';
+import 'package:fl_utilities/src/extensions/value_changed_x.dart';
 
 void main() {
   group('ValueChangedX.debounce -', () {

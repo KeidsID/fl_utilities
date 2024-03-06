@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  fl_utils:
+  fl_utilities:
     path: ../
 
 dev_dependencies:

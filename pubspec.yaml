@@ -1,9 +1,9 @@
-name: fl_utils
+name: fl_utilities
 description:
   Simple flutter utilities such as shorthands extension on BuildContext,
   debounce extension on ValueChanged, SizedScrollableArea widget, and more.
 version: 1.0.0
-repository: https://github.com/KeidsID/fl_utils
+repository: https://github.com/KeidsID/fl_utilities
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

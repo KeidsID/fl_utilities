@@ -1,5 +1,5 @@
 name: widgets
-description: fl_utils widgets example
+description: fl_utilities widgets example
 publish_to: "none"
 version: 0.1.0
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  fl_utils:
+  fl_utilities:
     path: ../../
 
 dev_dependencies:

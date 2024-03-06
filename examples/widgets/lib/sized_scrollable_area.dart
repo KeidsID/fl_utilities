@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_utils/fl_utils.dart';
+import 'package:fl_utilities/fl_utilities.dart';
 
 void main() => runApp(const MyApp());
 
