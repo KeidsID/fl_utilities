@@ -56,19 +56,17 @@ Builder(builder: (context) {
 });
 ```
 
-debounce on [TextField]:
+debounce extension on [ValueChanged]:
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:fl_utils/fl_utils.dart';
 
-Builder(builder: (context) {
-  return TextField(
-    onChanged: (text) {
-      debugPrint('Called after half a second of not typing');
-    }.debounce(),
-  );
-});
+TextField(
+  onChanged: (text) {
+    debugPrint('Called after half a second of not typing');
+  }.debounce(),
+);
 ```
 
 ## Available Utils
@@ -86,7 +84,11 @@ Builder(builder: (context) {
 
 - on [Text]:
 
-  - `applyOpacity`, create a new copy of [Text] with applied opacity.
+  - `applyOpacity`, apply opacity on [Text] widget.
+
+- on [TextStyle]:
+
+  - `applyOpacity`, apply opacity on [TextStyle].
 
 - on [ValueChanged]:
   - `debounce`, prevent callback from being called too often.

@@ -1,8 +1,19 @@
-## 0.1.0
+# 0.1.1
 
-### Added
+## Fixed
 
-#### Extensions
+- [TextX.applyOpacity] invalid style reference for null style [Text].
+
+## Others
+
+- Add [TextStyleX.applyOpacity], extension on [TextStyle] to apply opacity.
+- Update docs.
+
+# 0.1.0
+
+## Added
+
+### Extensions
 
 - on [BuildContext]:
 
@@ -20,13 +31,13 @@
 - on [ValueChanged]:
   - `debounce`, prevent callback from being called too often.
 
-#### Widgets
+### Widgets
 
 - `SizedScrollableArea`, a scrollable area that can be sized. It act as extra
   scrollable area (which detect touch and mouse wheel pointer) if your
   [Scrollable] widget must have fixed size.
 
-#### Others
+### Others
 
 - `DialogPage`, utilities for "go_router" package to show dialog. Did'nt depend
   on "go_router" package so "fl_utils" can be used without it.

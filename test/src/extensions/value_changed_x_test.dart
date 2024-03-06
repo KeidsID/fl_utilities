@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fl_utils/src/extensions/value_changed_x.dart';
 
 void main() {
-  group('ValueChangedX.debounce', () {
+  group('ValueChangedX.debounce -', () {
     const msDelay = 500;
     test('should call only once after delay without further events', () async {
       final callbackState = ValueChangedState<String>();

@@ -5,21 +5,80 @@ import 'package:fl_utils/src/extensions/text_x.dart';
 
 void main() {
   group('TextX', () {
-    const subject = Text(
-      'test subject',
-      style: TextStyle(color: Colors.white),
-    );
-    final color = subject.style?.color;
+    group('.applyOpacity -', () {
+      const appliedOpacity = 0.5;
 
-    test('.applyOpacity should return a new Text with specified opacity', () {
-      const opactiy = 0.5;
-      final actual = subject.applyOpacity(opactiy);
+      const defaultTextStyleKey = ValueKey('default-text-style');
+      const directStyle = TextStyle(color: Colors.amber);
 
-      expect(actual.data, subject.data);
-      expect(
-        actual.style,
-        subject.style?.apply(color: color?.withOpacity(opactiy)),
-      );
+      const textKey = ValueKey('text');
+      const textWithStyleKey = ValueKey('text-with-style');
+
+      Widget testSubject() {
+        return MaterialApp(
+          home: Scaffold(
+            body: DefaultTextStyle(
+              key: defaultTextStyleKey,
+              style: const TextStyle(color: Colors.white),
+              child: Column(
+                children: [
+                  const Text('data').applyOpacity(
+                    key: textKey,
+                    opacity: appliedOpacity,
+                  ),
+                  const Text('data', style: directStyle).applyOpacity(
+                    key: textWithStyleKey,
+                    opacity: appliedOpacity,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+
+      const testDesc =
+          'should return a new [Text] with modified style color opacity';
+      testWidgets('$testDesc ([DefaultTextStyle] reference)', (tester) async {
+        await tester.pumpWidget(testSubject());
+
+        final defaultStyle = tester
+            .widget<DefaultTextStyle>(find.byKey(defaultTextStyleKey))
+            .style;
+        final actualText = tester.widget<Text>(find.byKey(textKey));
+
+        // expect modified [DefaultTextStyle] opcaity.
+        expect(
+          actualText.style,
+          defaultStyle.apply(
+            color: defaultStyle.color?.withOpacity(appliedOpacity),
+          ),
+        );
+      });
+      testWidgets('$testDesc (direct [TextStyle] reference)', (tester) async {
+        await tester.pumpWidget(testSubject());
+
+        final actualText = tester.widget<Text>(find.byKey(textWithStyleKey));
+
+        // expect modified [directStyle] opcaity.
+        expect(
+          actualText.style,
+          directStyle.apply(
+            color: directStyle.color?.withOpacity(appliedOpacity),
+          ),
+        );
+      });
+    });
+  });
+
+  group('TextStyleX.applyOpacity -', () {
+    test('should return a new [TextStyle] with modified opacity', () {
+      const appliedOpacity = 0.5;
+      const style = TextStyle(color: Colors.amber);
+
+      final actual = style.applyOpacity(appliedOpacity);
+
+      expect(actual.color, style.color?.withOpacity(appliedOpacity));
     });
   });
 }
