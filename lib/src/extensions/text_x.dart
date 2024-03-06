@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Extension on [Text].
 ///
-/// Available API:
-/// - [applyOpacity], create a new [Text] widget with applied opacity.
-///
-///   {@tool dartpad}
-///     ** See code in examples/extensions/lib/text_x.dart **
-///   {@end-tool}
-///
 /// See also:
 /// - [TextStyleX], extension on [TextStyle].
 extension TextX on Text {
@@ -18,6 +11,10 @@ extension TextX on Text {
   ///
   /// WARNING: This method is create a new [Text] instance, so the previous
   /// [Text.key] will not be used. Try apply [Key] on the [key] argument instead.
+  ///
+  /// {@tool dartpad}
+  /// ** See code in examples/extensions/lib/text_x.dart **
+  /// {@end-tool}
   ///
   /// See also:
   /// - [TextStyleX.applyOpacity], extension to apply opacity on text style.
@@ -79,9 +76,6 @@ extension TextX on Text {
 }
 
 /// Extension on [TextStyle].
-///
-/// Available API:
-/// - [applyOpacity], apply opacity on [TextStyle].
 ///
 /// See also:
 /// - [TextX], extension on [Text].

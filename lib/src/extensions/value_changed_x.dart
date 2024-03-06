@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+/// Extension on [ValueChanged].
 extension ValueChangedX<T> on ValueChanged<T> {
   /// Prevent callback from being called too often.
   ///
@@ -12,6 +13,10 @@ extension ValueChangedX<T> on ValueChanged<T> {
   ///     debugPrint('Called after half a second of not typing');
   ///   }.debounce(),
   /// );
+  ///
+  /// {@tool dartpad}
+  /// ** See code in examples/extensions/lib/value_changed_x.dart **
+  /// {@end-tool}
   /// ```
   ValueChanged<T> debounce({
     Duration delay = const Duration(milliseconds: 500),

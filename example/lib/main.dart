@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fl_utils/fl_utils.dart';
 
-void main() => runApp(const BuildContextXApp());
+// more examples on https://github.com/KeidsID/fl_utils/tree/main/examples
 
-class BuildContextXApp extends StatefulWidget {
-  const BuildContextXApp({super.key});
+void main() => runApp(const MainApp());
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
 
   @override
-  State<BuildContextXApp> createState() => _BuildContextXAppState();
+  State<MainApp> createState() => _MainAppState();
 }
 
-class _BuildContextXAppState extends State<BuildContextXApp> {
+class _MainAppState extends State<MainApp> {
   bool isDarkTheme = true;
 
   @override
@@ -35,11 +37,24 @@ class _BuildContextXAppState extends State<BuildContextXApp> {
         final textTheme = context.textTheme;
 
         return Scaffold(
-          appBar: AppBar(title: const Text('BuildContextX Example')),
+          appBar: AppBar(title: const Text('fl_utils Example')),
           body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text('BuildContextX example', style: textTheme.titleMedium),
+                const SizedBox(height: 16.0),
+                ElevatedButton.icon(
+                  onPressed: () => setState(() => isDarkTheme = !isDarkTheme),
+                  icon: Icon(
+                    isDarkTheme
+                        ? Icons.dark_mode_outlined
+                        : Icons.light_mode_outlined,
+                  ),
+                  label: Text('${isDarkTheme ? 'Dark' : 'Light'} Theme'),
+                ),
+                const SizedBox(height: 16.0),
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   color: colorScheme.primary,
@@ -52,7 +67,7 @@ class _BuildContextXAppState extends State<BuildContextXApp> {
                     ),
                   ),
                 ),
-                const Divider(),
+                const SizedBox(height: 16.0),
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   color: colorScheme.secondary,
@@ -65,7 +80,7 @@ class _BuildContextXAppState extends State<BuildContextXApp> {
                     ),
                   ),
                 ),
-                const Divider(),
+                const SizedBox(height: 16.0),
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   color: colorScheme.tertiary,
@@ -74,20 +89,37 @@ class _BuildContextXAppState extends State<BuildContextXApp> {
                     'Text.style: context.textTheme.bodySmall\n'
                     'Text.color: context.colorScheme.onTertiary',
                     style: textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.onTertiary,
+                      color: colorScheme.onTertiary,
                     ),
                   ),
                 ),
                 const Divider(),
-                ElevatedButton.icon(
-                  onPressed: () => setState(() => isDarkTheme = !isDarkTheme),
-                  icon: Icon(
-                    isDarkTheme
-                        ? Icons.dark_mode_outlined
-                        : Icons.light_mode_outlined,
-                  ),
-                  label: Text('${isDarkTheme ? 'Dark' : 'Light'} Theme'),
+
+                //
+                Text(
+                  'TextX.applyOpacity example',
+                  style: textTheme.titleMedium,
                 ),
+                const SizedBox(height: 16.0),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('opacity: 1.0'),
+                        const Text('opacity: 0.8').applyOpacity(opacity: 0.8),
+                        const Text('opacity: 0.6').applyOpacity(opacity: 0.6),
+                        const Text('opacity: 0.4').applyOpacity(opacity: 0.4),
+                        const Text('opacity: 0.2').applyOpacity(opacity: 0.2),
+                        const Text('opacity: 0.4').applyOpacity(opacity: 0.4),
+                        const Text('opacity: 0.6').applyOpacity(opacity: 0.6),
+                        const Text('opacity: 0.8').applyOpacity(opacity: 0.8),
+                        const Text('opacity: 1.0'),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

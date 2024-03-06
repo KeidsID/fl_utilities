@@ -1,3 +1,10 @@
+# 1.0.0 - Initial Release
+
+## Added
+
+- Updated docs.
+- More examples.
+
 # 0.1.1
 
 ## Fixed

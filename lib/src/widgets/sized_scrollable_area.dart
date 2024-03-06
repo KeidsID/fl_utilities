@@ -1,5 +1,3 @@
-// coverage:ignore-file
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,39 +11,9 @@ import 'package:flutter/rendering.dart';
 /// Its usefull when you need extra scrollable area if your [Scrollable] widget
 /// must have fixed size.
 ///
-/// Use case example:
-/// ```dart
-/// const kCardW = 400.0;
-/// const kCardH = 200.0;
-///
-/// // [ListView] maintain it sizes, but can be scrolled without pointing the
-/// // actual [ListView].
-/// PrimaryScrollController(
-///   controller: ScrollController(),
-///   child: Stack(
-///     fit: StackFit.expand,
-///     children: [
-///       // scrollable area that fill all available space
-///       const SizedScrollableArea(primary: true),
-///
-///       // centered fixed width [ListView]
-///       Center(
-///         child: SizedBox(
-///           width: _kCardW,
-///           child: ListView.builder(
-///             primary: true,
-///             itemCount: 25,
-///             itemBuilder: (_, index) => SizedBox(
-///               height: _kCardH,
-///               child: Card(child: Text('#${index + 1}')),
-///             ),
-///           ),
-///         ),
-///       ),
-///     ],
-///   ),
-/// );
-/// ```
+/// {@tool dartpad}
+/// ** See code in examples/widgets/lib/sized_scrollable_area.dart **
+/// {@end-tool}
 /// {@endtemplate}
 class SizedScrollableArea extends StatelessWidget {
   /// {@macro fl_utils.src.widgets.SizedScrollableArea}
@@ -60,6 +28,7 @@ class SizedScrollableArea extends StatelessWidget {
     this.child,
   });
 
+  /// {@macro fl_utils.src.widgets.SizedScrollableArea}
   const SizedScrollableArea.expand({
     super.key,
     this.controller,
@@ -70,6 +39,7 @@ class SizedScrollableArea extends StatelessWidget {
   })  : width = double.infinity,
         height = double.infinity;
 
+  /// {@macro fl_utils.src.widgets.SizedScrollableArea}
   const SizedScrollableArea.shrink({
     super.key,
     this.controller,
@@ -80,6 +50,7 @@ class SizedScrollableArea extends StatelessWidget {
   })  : width = 0.0,
         height = 0.0;
 
+  /// {@macro fl_utils.src.widgets.SizedScrollableArea}
   SizedScrollableArea.fromSize({
     super.key,
     this.controller,
@@ -91,6 +62,7 @@ class SizedScrollableArea extends StatelessWidget {
   })  : width = size?.width,
         height = size?.height;
 
+  /// {@macro flutter.widgets.scroll_view.controller}
   const SizedScrollableArea.square({
     super.key,
     this.controller,

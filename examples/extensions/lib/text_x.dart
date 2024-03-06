@@ -9,15 +9,11 @@ class TextXApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightGreen,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: Scaffold(
-        appBar: AppBar(title: const Text('TextX Example')),
+        appBar: AppBar(title: const Text('TextX.applyOpacity Example')),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,

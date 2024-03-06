@@ -1,5 +1,5 @@
-name: extensions
-description: fl_utils extensions example.
+name: widgets
+description: fl_utils widgets example
 publish_to: "none"
 version: 0.1.0
 
