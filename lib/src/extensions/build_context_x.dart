@@ -43,4 +43,12 @@ extension BuildContextX on BuildContext {
   /// [ScaffoldMessenger.maybeOf] shorthand.
   ScaffoldMessengerState? get scaffoldMessenger =>
       ScaffoldMessenger.maybeOf(this);
+
+  /// Get the closest [ScrollBehavior] instance from [ScrollConfiguration].
+  ///
+  /// If no [ScrollConfiguration] widget is in scope of the given context, a
+  /// default [ScrollBehavior] instance is returned.
+  ///
+  /// [ScrollConfiguration.of] shorthand.
+  ScrollBehavior get scrollBehavior => ScrollConfiguration.of(this);
 }
