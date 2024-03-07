@@ -1,6 +1,11 @@
+import 'dart:math' as math;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+
+import 'package:fl_utilities/fl_utilities.dart';
 
 /// {@template fl_utils.src.widgets.SizedScrollableArea}
 /// A scrollable area that can be sized.
@@ -15,12 +20,13 @@ import 'package:flutter/rendering.dart';
 /// ** See code in examples/widgets/lib/sized_scrollable_area.dart **
 /// {@end-tool}
 /// {@endtemplate}
-class SizedScrollableArea extends StatelessWidget {
+class SizedScrollableArea extends StatefulWidget {
   /// {@macro fl_utils.src.widgets.SizedScrollableArea}
   const SizedScrollableArea({
     super.key,
     this.controller,
     this.primary,
+    this.physics,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.width,
@@ -33,6 +39,7 @@ class SizedScrollableArea extends StatelessWidget {
     super.key,
     this.controller,
     this.primary,
+    this.physics,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.child,
@@ -44,6 +51,7 @@ class SizedScrollableArea extends StatelessWidget {
     super.key,
     this.controller,
     this.primary,
+    this.physics,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     this.child,
@@ -55,6 +63,7 @@ class SizedScrollableArea extends StatelessWidget {
     super.key,
     this.controller,
     this.primary,
+    this.physics,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     Size? size,
@@ -67,6 +76,7 @@ class SizedScrollableArea extends StatelessWidget {
     super.key,
     this.controller,
     this.primary,
+    this.physics,
     this.scrollDirection = Axis.vertical,
     this.reverse = false,
     double? dimension,
@@ -79,6 +89,9 @@ class SizedScrollableArea extends StatelessWidget {
 
   /// {@macro flutter.widgets.scroll_view.primary}
   final bool? primary;
+
+  /// {@macro flutter.widgets.scroll_view.physics}
+  final ScrollPhysics? physics;
 
   /// {@macro flutter.widgets.scroll_view.scrollDirection}
   final Axis scrollDirection;
@@ -95,80 +108,227 @@ class SizedScrollableArea extends StatelessWidget {
   /// In case you need to add decoration widget such as [Container].
   final Widget? child;
 
-  double _scrollOffset(Offset offset) {
-    final value = (scrollDirection == Axis.vertical) ? offset.dy : offset.dx;
+  @override
+  State<SizedScrollableArea> createState() => _SizedScrollableAreaState();
 
-    return value * (reverse ? -1 : 1);
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+
+    final DiagnosticLevel sizeLevel =
+        ((width == double.infinity && height == double.infinity) ||
+                (width == 0.0 && height == 0.0))
+            ? DiagnosticLevel.hidden
+            : DiagnosticLevel.info;
+
+    properties
+      ..add(
+        DoubleProperty('width', width, defaultValue: null, level: sizeLevel),
+      )
+      ..add(
+        DoubleProperty('height', height, defaultValue: null, level: sizeLevel),
+      )
+
+      //
+      ..add(EnumProperty<Axis>('scrollDirection', scrollDirection))
+      ..add(DiagnosticsProperty<ScrollPhysics>(
+        'physics',
+        physics,
+        showName: false,
+        defaultValue: null,
+      ))
+      ..add(FlagProperty(
+        'reverse',
+        value: reverse,
+        ifTrue: 'reversed',
+        showName: true,
+      ))
+      ..add(DiagnosticsProperty<ScrollController>(
+        'controller',
+        controller,
+        showName: false,
+        defaultValue: null,
+      ))
+      ..add(FlagProperty(
+        'primary',
+        value: primary,
+        ifTrue: 'using primary controller',
+        showName: true,
+      ));
+  }
+}
+
+class _SizedScrollableAreaState extends State<SizedScrollableArea> {
+  // GETTERS
+
+  Axis get axis => widget.scrollDirection;
+
+  ScrollController? get scrollController {
+    final bool effectivePrimary = widget.primary ??
+        widget.controller == null &&
+            PrimaryScrollController.shouldInherit(
+                context, widget.scrollDirection);
+
+    final ScrollController? controller = effectivePrimary
+        ? PrimaryScrollController.maybeOf(context)
+        : widget.controller;
+
+    return controller;
   }
 
-  // ----------------------------------------------------------------------------
-  // SCROLL WHEEL HANDLERS
-  // ----------------------------------------------------------------------------
+  ScrollPosition? get position => scrollController?.position;
+  ScrollBehavior get _configuration => context.scrollBehavior;
+  ScrollPhysics get _physics =>
+      widget.physics ?? _configuration.getScrollPhysics(context);
 
-  PointerSignalEventListener _onPointerSignal(ScrollController? controller) {
-    return (ev) {
-      if (ev is PointerScrollEvent) {
-        controller?.position.moveTo(
-          controller.position.pixels + _scrollOffset(ev.scrollDelta),
-        );
-      } else if (ev is PointerScrollInertiaCancelEvent) {
-        controller?.position.pointerScroll(0);
-      }
-    };
-  }
-
-  // ----------------------------------------------------------------------------
   // TOUCH HANDLERS
-  // ----------------------------------------------------------------------------
 
-  GestureDragUpdateCallback? _onVerticalDragUpdate(
-    ScrollController? controller,
-  ) {
-    return scrollDirection != Axis.vertical
-        ? null
-        : (details) {
-            controller?.position.moveTo(
-              controller.position.pixels - _scrollOffset(details.delta),
-            );
-          };
+  double _scrollOffset(Offset offset) {
+    final value =
+        (widget.scrollDirection == Axis.vertical) ? offset.dy : offset.dx;
+
+    return value * (widget.reverse ? -1 : 1);
   }
 
-  GestureDragUpdateCallback? _onHorizontalDragUpdate(
-    ScrollController? controller,
-  ) {
-    return scrollDirection != Axis.horizontal
-        ? null
-        : (details) {
-            controller?.position.moveTo(
-              controller.position.pixels - _scrollOffset(details.delta),
-            );
-          };
+  GestureDragUpdateCallback? get _onVerticalDragUpdate =>
+      widget.scrollDirection != Axis.vertical
+          ? null
+          : (details) {
+              position?.moveTo(position!.pixels - _scrollOffset(details.delta));
+            };
+
+  GestureDragUpdateCallback? get _onHorizontalDragUpdate =>
+      widget.scrollDirection != Axis.horizontal
+          ? null
+          : (details) {
+              position?.moveTo(
+                position!.pixels - _scrollOffset(details.delta),
+              );
+            };
+
+  // SCROLL WHEEL HANDLERS
+
+  // PointerSignalEventListener _onPointerSignal(ScrollController? controller) {
+  //   return (ev) {
+  //     if (ev is PointerScrollEvent) {
+  //       controller?.position.moveTo(
+  //         controller.position.pixels + _scrollOffset(ev.scrollDelta),
+  //       );
+  //     } else if (ev is PointerScrollInertiaCancelEvent) {
+  //       controller?.position.pointerScroll(0);
+  //     }
+  //   };
+  // }
+
+  /// Returns the offset that should result from applying [event] to the current
+  /// position, taking min/max scroll extent into account.
+  ///
+  /// Return null if [position] is null.
+  ///
+  /// Copied from [Scrollable].
+  double? _targetScrollOffsetForPointerScroll(double delta) {
+    if (position == null) return null;
+
+    return math.min(
+      math.max(position!.pixels + delta, position!.minScrollExtent),
+      position!.maxScrollExtent,
+    );
+  }
+
+  /// Returns the delta that should result from applying [event] with axis,
+  /// direction, and any modifiers specified by the ScrollBehavior taken into
+  /// account.
+  ///
+  /// Copied from [Scrollable].
+  double _pointerSignalEventDelta(PointerScrollEvent event) {
+    late double delta;
+    final Set<LogicalKeyboardKey> pressed =
+        HardwareKeyboard.instance.logicalKeysPressed;
+    final bool flipAxes = pressed
+            .any(_configuration.pointerAxisModifiers.contains) &&
+        // Axes are only flipped for physical mouse wheel input.
+        // On some platforms, like web, trackpad input is handled through pointer
+        // signals, but should not be included in this axis modifying behavior.
+        // This is because on a trackpad, all directional axes are available to
+        // the user, while mouse scroll wheels typically are restricted to one
+        // axis.
+        event.kind == PointerDeviceKind.mouse;
+
+    switch (axis) {
+      case Axis.horizontal:
+        delta = flipAxes ? event.scrollDelta.dy : event.scrollDelta.dx;
+      case Axis.vertical:
+        delta = flipAxes ? event.scrollDelta.dx : event.scrollDelta.dy;
+    }
+
+    if (widget.reverse) {
+      delta *= -1;
+    }
+
+    return delta;
+  }
+
+  /// Copied from [Scrollable].
+  void _onPointerSignal(PointerSignalEvent event) {
+    final pos = position; // lint helper
+
+    if (event is PointerScrollEvent && pos != null) {
+      if (!_physics.shouldAcceptUserOffset(pos)) return;
+
+      final double delta = _pointerSignalEventDelta(event);
+      final double targetScrollOffset =
+          _targetScrollOffsetForPointerScroll(delta)!;
+
+      // Only express interest in the event if it would actually result in a scroll.
+      if (delta != 0.0 && targetScrollOffset != pos.pixels) {
+        GestureBinding.instance.pointerSignalResolver
+            .register(event, _handlePointerScroll);
+      }
+    } else if (event is PointerScrollInertiaCancelEvent) {
+      pos?.pointerScroll(0);
+      // Don't use the pointer signal resolver, all hit-tested scrollables should stop.
+    }
+  }
+
+  void _handlePointerScroll(PointerEvent event) {
+    final pos = position; // lint helper
+
+    if (pos == null) return;
+
+    assert(event is PointerScrollEvent);
+    final double delta = _pointerSignalEventDelta(event as PointerScrollEvent);
+    final double targetScrollOffset =
+        _targetScrollOffsetForPointerScroll(delta)!;
+    if (delta != 0.0 && targetScrollOffset != pos.pixels) {
+      pos.pointerScroll(delta);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool effectivePrimary = primary ??
-        controller == null &&
-            PrimaryScrollController.shouldInherit(context, scrollDirection);
-
-    final ScrollController? scrollController = effectivePrimary
-        ? PrimaryScrollController.maybeOf(context)
-        : controller;
-
     return SizedBox(
-      width: width,
-      height: height,
+      width: widget.width,
+      height: widget.height,
       child: Listener(
-        onPointerSignal: _onPointerSignal(scrollController),
+        onPointerSignal: _onPointerSignal,
         child: MouseRegion(
-          // For mobile/mouse/trackpad drag.
           child: GestureDetector(
-            onVerticalDragUpdate: _onVerticalDragUpdate(scrollController),
-            onHorizontalDragUpdate: _onHorizontalDragUpdate(scrollController),
-            child: child,
+            supportedDevices: context.scrollBehavior.dragDevices,
+            onVerticalDragUpdate: _onVerticalDragUpdate,
+            onHorizontalDragUpdate: _onHorizontalDragUpdate,
+            child: widget.child,
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+
+    properties
+      ..add(DiagnosticsProperty<ScrollPosition>('position', position))
+      ..add(DiagnosticsProperty('effective physics', _physics));
   }
 }
