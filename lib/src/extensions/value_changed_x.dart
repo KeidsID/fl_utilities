@@ -13,11 +13,11 @@ extension ValueChangedX<T> on ValueChanged<T> {
   ///     debugPrint('Called after half a second of not typing');
   ///   }.debounce(),
   /// );
+  /// ```
   ///
   /// {@tool dartpad}
-  /// ** See code in examples/extensions/lib/value_changed_x.dart **
+  /// ** See code in example/lib/src/extensions/value_changed_x.dart **
   /// {@end-tool}
-  /// ```
   ValueChanged<T> debounce({
     Duration delay = const Duration(milliseconds: 500),
   }) {
