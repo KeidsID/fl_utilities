@@ -9,11 +9,13 @@ extension TextX on Text {
   ///
   /// Better performance than wrapping [Text] with [Opacity].
   ///
-  /// WARNING: This method is create a new [Text] instance, so the previous
-  /// [Text.key] will not be used. Try apply [Key] on the [key] argument instead.
+  /// [opacity] should be a value between 0.0 and 1.0.
+  ///
+  /// WARNING: This method is create a new [Text] instance, so the [Text.key]
+  /// will not be used. Try apply it on the [key] argument instead.
   ///
   /// {@tool dartpad}
-  /// ** See code in examples/extensions/lib/text_x.dart **
+  /// ** See code in example/lib/src/extensions/text_x.dart **
   /// {@end-tool}
   ///
   /// See also:
@@ -82,6 +84,8 @@ extension TextX on Text {
 extension TextStyleX on TextStyle {
   /// Creates a copy of this [TextStyle] replacing the [TextStyle.color] with
   /// the specified [opacity].
+  ///
+  /// [opacity] should be a value between 0.0 and 1.0.
   ///
   /// See also:
   /// - [TextX.applyOpacity], extension to apply opacity on [Text] widget.

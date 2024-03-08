@@ -5,8 +5,16 @@ import 'package:flutter/material.dart';
 /// Mostly contains shorthands for commonly used flutter utilities like
 /// [Theme.of], [MediaQuery.of], etc.
 ///
+/// ```dart
+/// Builder(builder: (context) {
+///   context.theme; // instead of `Theme.of(context)`
+///
+///   return const Placeholder();
+/// });
+/// ```
+///
 /// {@tool dartpad}
-/// ** See code in examples/extensions/lib/build_context_x.dart **
+/// ** See code in example/lib/src/extensions/build_context_x.dart **
 /// {@end-tool}
 extension BuildContextX on BuildContext {
   /// Get the closest [ThemeData] instance.

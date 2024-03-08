@@ -17,7 +17,7 @@ import 'package:fl_utilities/fl_utilities.dart';
 /// must have fixed size.
 ///
 /// {@tool dartpad}
-/// ** See code in examples/widgets/lib/sized_scrollable_area.dart **
+/// ** See code in example/lib/src/widgets/sized_scrollable_area.dart **
 /// {@end-tool}
 /// {@endtemplate}
 class SizedScrollableArea extends StatefulWidget {

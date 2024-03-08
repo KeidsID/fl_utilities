@@ -30,10 +30,3 @@ migrate_working_dir/
 .dart_tool/
 .packages
 build/
-
-# native
-android/
-ios/
-macos/
-linux/
-windows/

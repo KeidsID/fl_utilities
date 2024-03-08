@@ -12,6 +12,7 @@ void main() {
       const directStyle = TextStyle(color: Colors.amber);
 
       const textKey = ValueKey('text');
+      const richTextKey = ValueKey('rich-text');
       const textWithStyleKey = ValueKey('text-with-style');
 
       Widget testSubject() {
@@ -24,6 +25,10 @@ void main() {
                 children: [
                   const Text('data').applyOpacity(
                     key: textKey,
+                    opacity: appliedOpacity,
+                  ),
+                  const Text.rich(TextSpan(text: 'data')).applyOpacity(
+                    key: richTextKey,
                     opacity: appliedOpacity,
                   ),
                   const Text('data', style: directStyle).applyOpacity(
@@ -46,14 +51,16 @@ void main() {
             .widget<DefaultTextStyle>(find.byKey(defaultTextStyleKey))
             .style;
         final actualText = tester.widget<Text>(find.byKey(textKey));
+        final actualRichText = tester.widget<Text>(find.byKey(richTextKey));
 
         // expect modified [DefaultTextStyle] opcaity.
-        expect(
-          actualText.style,
-          defaultStyle.apply(
-            color: defaultStyle.color?.withOpacity(appliedOpacity),
-          ),
+
+        final expectedStyle = defaultStyle.apply(
+          color: defaultStyle.color?.withOpacity(appliedOpacity),
         );
+
+        expect(actualText.style, expectedStyle);
+        expect(actualRichText.style, expectedStyle);
       });
       testWidgets('$testDesc (direct [TextStyle] reference)', (tester) async {
         await tester.pumpWidget(testSubject());
