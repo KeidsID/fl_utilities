@@ -109,7 +109,7 @@ class SizedScrollableArea extends StatefulWidget {
   final Widget? child;
 
   @override
-  State<SizedScrollableArea> createState() => _SizedScrollableAreaState();
+  State<SizedScrollableArea> createState() => SizedScrollableAreaState();
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -158,7 +158,7 @@ class SizedScrollableArea extends StatefulWidget {
   }
 }
 
-class _SizedScrollableAreaState extends State<SizedScrollableArea> {
+class SizedScrollableAreaState extends State<SizedScrollableArea> {
   // GETTERS
 
   Axis get axis => widget.scrollDirection;
@@ -178,10 +178,42 @@ class _SizedScrollableAreaState extends State<SizedScrollableArea> {
 
   ScrollPosition? get position => scrollController?.position;
   ScrollBehavior get _configuration => context.scrollBehavior;
-  ScrollPhysics get _physics =>
-      widget.physics ?? _configuration.getScrollPhysics(context);
+  ScrollPhysics get resolvedPhysics =>
+      widget.physics?.applyTo(_configuration.getScrollPhysics(context)) ??
+      _configuration.getScrollPhysics(context);
 
-  // TOUCH HANDLERS
+  /// The direction in which the widget scrolls.
+  AxisDirection get axisDirection {
+    return getAxisDirectionFromAxisReverseAndDirectionality(
+      context,
+      axis,
+      widget.reverse,
+    );
+  }
+
+  /// An [Offset] that represents the absolute distance from the origin, or 0,
+  /// of the [ScrollPosition] expressed in the associated [Axis].
+  ///
+  /// Used by [EdgeDraggingAutoScroller] to progress the position forward when a
+  /// drag gesture reaches the edge of the [Viewport].
+  Offset? get deltaToScrollOrigin {
+    final pos = position; // lint helper
+
+    if (pos == null) return null;
+
+    switch (axisDirection) {
+      case AxisDirection.down:
+        return Offset(0, pos.pixels);
+      case AxisDirection.up:
+        return Offset(0, -pos.pixels);
+      case AxisDirection.left:
+        return Offset(-pos.pixels, 0);
+      case AxisDirection.right:
+        return Offset(pos.pixels, 0);
+    }
+  }
+
+  // DRAG HANDLERS
 
   double _scrollOffset(Offset offset) {
     final value =
@@ -207,18 +239,6 @@ class _SizedScrollableAreaState extends State<SizedScrollableArea> {
             };
 
   // SCROLL WHEEL HANDLERS
-
-  // PointerSignalEventListener _onPointerSignal(ScrollController? controller) {
-  //   return (ev) {
-  //     if (ev is PointerScrollEvent) {
-  //       controller?.position.moveTo(
-  //         controller.position.pixels + _scrollOffset(ev.scrollDelta),
-  //       );
-  //     } else if (ev is PointerScrollInertiaCancelEvent) {
-  //       controller?.position.pointerScroll(0);
-  //     }
-  //   };
-  // }
 
   /// Returns the offset that should result from applying [event] to the current
   /// position, taking min/max scroll extent into account.
@@ -273,7 +293,7 @@ class _SizedScrollableAreaState extends State<SizedScrollableArea> {
     final pos = position; // lint helper
 
     if (event is PointerScrollEvent && pos != null) {
-      if (!_physics.shouldAcceptUserOffset(pos)) return;
+      if (!resolvedPhysics.shouldAcceptUserOffset(pos)) return;
 
       final double delta = _pointerSignalEventDelta(event);
       final double targetScrollOffset =
@@ -329,6 +349,6 @@ class _SizedScrollableAreaState extends State<SizedScrollableArea> {
 
     properties
       ..add(DiagnosticsProperty<ScrollPosition>('position', position))
-      ..add(DiagnosticsProperty('effective physics', _physics));
+      ..add(DiagnosticsProperty('effective physics', resolvedPhysics));
   }
 }
