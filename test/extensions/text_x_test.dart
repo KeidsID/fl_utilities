@@ -5,7 +5,7 @@ import 'package:fl_utilities/fl_utilities.dart';
 
 void main() {
   group('TextX', () {
-    group('.applyOpacity -', () {
+    group('applyOpacity -', () {
       const appliedOpacity = 0.5;
 
       const defaultTextStyleKey = ValueKey('default-text-style');
@@ -78,14 +78,17 @@ void main() {
     });
   });
 
-  group('TextStyleX.applyOpacity -', () {
-    test('should return a new [TextStyle] with modified opacity', () {
-      const appliedOpacity = 0.5;
-      const style = TextStyle(color: Colors.amber);
+  group('TextStyleX', () {
+    test(
+      'applyOpacity - should return a new [TextStyle] with modified opacity',
+      () {
+        const appliedOpacity = 0.5;
+        const style = TextStyle(color: Colors.amber);
 
-      final actual = style.applyOpacity(appliedOpacity);
+        final actual = style.applyOpacity(appliedOpacity);
 
-      expect(actual.color, style.color?.withOpacity(appliedOpacity));
-    });
+        expect(actual.color, style.color?.withOpacity(appliedOpacity));
+      },
+    );
   });
 }
