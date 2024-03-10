@@ -1,3 +1,77 @@
+# unreleased
+
+## Breaking Changes
+
+### Added
+
+- [CustomListView], a custom [ListView] with customizeable children.
+- [CustomListViewItemDelegate], delegate to customize [CustomListView] item.
+- [CustomListViewItemAlignment], an enum to control item cross axis alignment of
+  [CustomListView].
+
+### Removed
+
+- [SizedScrollableArea]
+
+The main reason why [SizedScrollableArea] exist because there's some cases that
+we need to modify the [ListView] item cross axis length, but we still wanted the
+scroll area fill the whole screen.
+
+But why replace [SizedScrollableArea] with [CustomListView]?
+
+- The [SizedScrollableArea] widget is too verbose (Need same controller to
+  control scroll).
+- The [CustomListView] widget is more flexible because it just a [ListView] with
+  some extra features (such as manipulate cross axis length).
+- And actually [SizedScrollableArea] is not stable yet (too much bugs).
+
+### Migrate Guide
+
+- [SizedScrollableArea] -> [CustomListView]
+
+  Before:
+  ```dart
+  PrimaryScrollController(
+    controller: ScrollController(),
+    child: Stack(
+      fit: StackFit.expand,
+      children: [
+        const SizedScrollableArea(primary: true),
+
+        //
+        Center( // alignment? 
+          child: SizedBox(
+            width: 200.0, // cross axis length
+            child: ListView(
+              primary: true,
+              children: [
+                const SizedBox(
+                  height: 200.0, // main axis length
+                  child: const Card(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+  ```
+
+  After:
+  ```dart
+  CustomListView(
+    children: [
+      CustomListViewItemDelegate(
+        mainAxisLength: 200.0,
+        crossAxisLength: 200.0,
+        crossAxisAlignment: CustomListViewItemAlignment.center, // default
+        child: Card(),
+      ),
+    ],
+  );
+  ```
+
 # 1.0.0 - Initial Release
 
 ## Added
