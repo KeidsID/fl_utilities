@@ -11,4 +11,4 @@ export 'src/others/dialog_page.dart';
 export 'src/others/use_path_url_strategy/use_path_url_strategy.dart';
 
 //
-export 'src/widgets/sized_scrollable_area.dart';
+export 'src/widgets/custom_list_view.dart';
