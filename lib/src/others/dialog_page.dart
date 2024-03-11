@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 
-/// {@template fl_utils.src.others.DialogPage}
+/// {@template fl_utils.others.DialogPage}
 /// [Page] that suitable for [Dialog]. This is the same as calling
 /// the [showDialog] method, but this [Page] can work with `go_router`.
 /// {@endtemplate}
 class DialogPage<T> extends Page<T> {
-  /// {@macro fl_utils.src.others.DialogPage}
+  /// {@macro fl_utils.others.DialogPage}
   const DialogPage({
     super.key,
     super.name,

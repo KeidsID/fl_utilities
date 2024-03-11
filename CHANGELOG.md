@@ -1,17 +1,19 @@
 # unreleased
 
-## Breaking Changes
-
 ### Added
 
 - [CustomListView], a custom [ListView] with customizeable children.
 - [CustomListViewItemDelegate], delegate to customize [CustomListView] item.
 - [CustomListViewItemAlignment], an enum to control item cross axis alignment of
   [CustomListView].
+- [CustomListViewItem], a widget implementation for
+  [CustomListViewItemDelegate], not to be used directly.
 
 ### Removed
 
 - [SizedScrollableArea]
+
+## Breaking Changes
 
 The main reason why [SizedScrollableArea] exist because there's some cases that
 we need to modify the [ListView] item cross axis length, but we still wanted the
@@ -30,6 +32,7 @@ But why replace [SizedScrollableArea] with [CustomListView]?
 - [SizedScrollableArea] -> [CustomListView]
 
   Before:
+
   ```dart
   PrimaryScrollController(
     controller: ScrollController(),
@@ -39,7 +42,7 @@ But why replace [SizedScrollableArea] with [CustomListView]?
         const SizedScrollableArea(primary: true),
 
         //
-        Center( // alignment? 
+        Center( // alignment?
           child: SizedBox(
             width: 200.0, // cross axis length
             child: ListView(
@@ -59,6 +62,7 @@ But why replace [SizedScrollableArea] with [CustomListView]?
   ```
 
   After:
+
   ```dart
   CustomListView(
     children: [

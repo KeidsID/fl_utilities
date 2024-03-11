@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fl_utilities/fl_utilities.dart';
 
 void main() => runApp(const MyApp());
@@ -19,8 +20,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    CrossAxisAlignment;
-
     return MaterialApp(
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
@@ -40,6 +39,8 @@ class _MyAppState extends State<MyApp> {
             children: [
               const SizedBox(height: 16.0),
               Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -51,14 +52,16 @@ class _MyAppState extends State<MyApp> {
                           : 'scrollDirection: Axis.horizontal',
                     ),
                   ),
-                  const SizedBox(width: 16.0),
+
+                  //
                   ElevatedButton(
                     onPressed: () => setState(() => isReversed = !isReversed),
                     child: Text(
                       isReversed ? 'reverse: true' : 'reverse: false',
                     ),
                   ),
-                  const SizedBox(width: 16.0),
+
+                  //
                   DropdownButton<CustomListViewItemAlignment>(
                     value: crossAxisAlignment,
                     onChanged: (value) => setState(() {
