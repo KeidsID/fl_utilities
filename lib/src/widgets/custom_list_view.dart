@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-/// [CustomListView.builder] signature function to build item.
-typedef CustomListViewBuilder = CustomListViewItemDelegate? Function(
+/// [CustomListView] signature function to build item on demand.
+typedef NullableIndexedCustomListViewBuilder = CustomListViewItemDelegate?
+    Function(
   BuildContext context,
   int index,
 );
 
-/// {@template fl_utilities.src.widgets.CustomListView}
+/// [CustomListView] signature function to build seperator.
+typedef IndexedCustomListViewBuilder = CustomListViewItemDelegate Function(
+  BuildContext context,
+  int index,
+);
+
+/// {@template fl_utilities.widgets.CustomListView}
 /// A custom [ListView].
 ///
 /// Unlike the [ListView] that force its item cross axis to stretch, this widget
@@ -19,8 +27,8 @@ typedef CustomListViewBuilder = CustomListViewItemDelegate? Function(
 /// See also:
 /// - [CustomListViewItemDelegate], delegate to customize item.
 /// {@endtemplate}
-class CustomListView extends CustomScrollView {
-  /// {@macro fl_utilities.src.widgets.CustomListView}
+class CustomListView extends ListView {
+  /// {@macro fl_utilities.widgets.CustomListView}
   CustomListView({
     super.key,
     super.scrollDirection,
@@ -28,38 +36,35 @@ class CustomListView extends CustomScrollView {
     super.controller,
     super.primary,
     super.physics,
-    super.scrollBehavior,
     super.shrinkWrap,
-    super.center,
-    super.anchor,
+    super.padding,
+    super.itemExtent,
+    super.prototypeItem,
+    super.addAutomaticKeepAlives,
+    super.addRepaintBoundaries,
+    super.addSemanticIndexes,
     super.cacheExtent,
+    List<CustomListViewItemDelegate> children = const [],
     super.semanticChildCount,
     super.dragStartBehavior,
     super.keyboardDismissBehavior,
     super.restorationId,
     super.clipBehavior,
-    this.addAutomaticKeepAlives = true,
-    this.addRepaintBoundaries = true,
-    this.addSemanticIndexes = true,
-    List<CustomListViewItemDelegate> children = const [],
   }) : super(
-          slivers: [
-            SliverList.list(
-              addAutomaticKeepAlives: addAutomaticKeepAlives,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addSemanticIndexes: addSemanticIndexes,
-              children: children.map((e) {
-                return _itemBuild(e, scrollDirection, reverse);
-              }).toList(),
-            ),
-          ],
+          children: children.map((e) {
+            return CustomListViewItem(
+              delegate: e,
+              scrollDirection: scrollDirection,
+              reverse: reverse,
+            );
+          }).toList(),
         );
 
-  /// {@macro fl_utilities.src.widgets.CustomListView}
+  /// {@macro fl_utilities.widgets.CustomListView}
   ///
-  /// This constructor is appropriate for sliver lists with a large
-  /// (or infinite) number of children because the builder is called only for
-  /// those children that are actually visible.
+  /// This constructor is appropriate for list views with a large (or infinite)
+  /// number of children because the builder is called only for those children
+  /// that are actually visible.
   CustomListView.builder({
     super.key,
     super.scrollDirection,
@@ -67,124 +72,109 @@ class CustomListView extends CustomScrollView {
     super.controller,
     super.primary,
     super.physics,
-    super.scrollBehavior,
     super.shrinkWrap,
-    super.center,
-    super.anchor,
+    super.padding,
+    super.itemExtent,
+    super.prototypeItem,
+    required NullableIndexedCustomListViewBuilder itemBuilder,
+    super.findChildIndexCallback,
+    super.itemCount,
+    super.addAutomaticKeepAlives = true,
+    super.addRepaintBoundaries = true,
+    super.addSemanticIndexes = true,
     super.cacheExtent,
     super.semanticChildCount,
     super.dragStartBehavior,
     super.keyboardDismissBehavior,
     super.restorationId,
     super.clipBehavior,
-    this.addAutomaticKeepAlives = true,
-    this.addRepaintBoundaries = true,
-    this.addSemanticIndexes = true,
-    int? itemCount,
-    required CustomListViewBuilder itemBuilder,
-  }) : super(
-          slivers: [
-            SliverList.builder(
-              addAutomaticKeepAlives: addAutomaticKeepAlives,
-              addRepaintBoundaries: addRepaintBoundaries,
-              addSemanticIndexes: addSemanticIndexes,
-              itemCount: itemCount,
-              itemBuilder: (context, index) {
-                final delegate = itemBuilder(context, index);
+  }) : super.builder(
+          itemBuilder: (context, index) {
+            final delegate = itemBuilder(context, index);
 
-                if (delegate == null) return null;
+            if (delegate == null) return null;
 
-                return _itemBuild(delegate, scrollDirection, reverse);
-              },
-            ),
-          ],
+            return CustomListViewItem(
+              delegate: delegate,
+              scrollDirection: scrollDirection,
+              reverse: reverse,
+            );
+          },
         );
 
-  /// {@macro flutter.widgets.SliverChildBuilderDelegate.addAutomaticKeepAlives}
-  final bool addAutomaticKeepAlives;
+  /// {@macro fl_utilities.widgets.CustomListView}
+  CustomListView.separated({
+    super.key,
+    super.scrollDirection,
+    super.reverse,
+    super.controller,
+    super.primary,
+    super.physics,
+    super.shrinkWrap,
+    super.padding,
+    required NullableIndexedCustomListViewBuilder itemBuilder,
+    super.findChildIndexCallback,
+    required IndexedCustomListViewBuilder separatorBuilder,
+    required super.itemCount,
+    super.addAutomaticKeepAlives = true,
+    super.addRepaintBoundaries = true,
+    super.addSemanticIndexes = true,
+    super.cacheExtent,
+    super.dragStartBehavior,
+    super.keyboardDismissBehavior,
+    super.restorationId,
+    super.clipBehavior,
+  }) : super.separated(
+          itemBuilder: (context, index) {
+            final delegate = itemBuilder(context, index);
 
-  /// {@macro flutter.widgets.SliverChildBuilderDelegate.addRepaintBoundaries}
-  final bool addRepaintBoundaries;
+            if (delegate == null) return null;
 
-  /// {@macro flutter.widgets.SliverChildBuilderDelegate.addSemanticIndexes}
-  final bool addSemanticIndexes;
-
-  static Widget _itemBuild(
-    CustomListViewItemDelegate delegate,
-    Axis scrollDirection,
-    bool reverse,
-  ) {
-    final isVert = scrollDirection == Axis.vertical;
-
-    return SizedBox(
-      width: !isVert ? delegate.mainAxisLength : null,
-      height: isVert ? delegate.mainAxisLength : null,
-      child: delegate.crossAxisAlignment == CustomListViewItemAlignment.stretch
-          ? delegate.child
-          : Builder(builder: (context) {
-              final crossAxisDirection =
-                  getAxisDirectionFromAxisReverseAndDirectionality(
-                context,
-                flipAxis(scrollDirection),
-                reverse,
-              );
-
-              final Alignment startAlignment = switch (crossAxisDirection) {
-                AxisDirection.down => Alignment.topCenter,
-                AxisDirection.up => Alignment.bottomCenter,
-                AxisDirection.right => Alignment.centerLeft,
-                AxisDirection.left => Alignment.centerRight,
-              };
-
-              final Alignment endAlignment = switch (crossAxisDirection) {
-                AxisDirection.down => Alignment.bottomCenter,
-                AxisDirection.up => Alignment.topCenter,
-                AxisDirection.right => Alignment.centerRight,
-                AxisDirection.left => Alignment.centerLeft,
-              };
-
-              return Align(
-                alignment: switch (delegate.crossAxisAlignment) {
-                  CustomListViewItemAlignment.start => startAlignment,
-                  CustomListViewItemAlignment.end => endAlignment,
-                  _ => Alignment.center,
-                },
-                child: SizedBox(
-                  width: isVert ? delegate.crossAxisLength : null,
-                  height: !isVert ? delegate.crossAxisLength : null,
-                  child: delegate.child,
-                ),
-              );
-            }),
-    );
-  }
+            return CustomListViewItem(
+              delegate: delegate,
+              scrollDirection: scrollDirection,
+              reverse: reverse,
+            );
+          },
+          separatorBuilder: (context, index) => CustomListViewItem(
+            delegate: separatorBuilder(context, index),
+            scrollDirection: scrollDirection,
+            reverse: reverse,
+          ),
+        );
 }
 
-/// {@template fl_utilities.src.widgets.CustomListViewItemDelegate}
-/// The delegate of [CustomListView] item.
+/// {@template fl_utilities.widgets.CustomListViewItemDelegate}
+/// [CustomListView] children delegate.
 ///
 /// With this you can manipulate the cross axis length of the item. Unlike
 /// [ListView] that force its item cross axis length to stretch.
 /// {@endtemplate}
 class CustomListViewItemDelegate {
-  /// {@macro fl_utilities.src.widgets.CustomListViewItemDelegate}
+  /// {@macro fl_utilities.widgets.CustomListViewItemDelegate}
   const CustomListViewItemDelegate({
+    this.key,
     this.mainAxisLength,
     this.crossAxisLength,
     this.crossAxisAlignment = CustomListViewItemAlignment.center,
     this.child,
-  });
+  }) : assert(mainAxisLength != double.infinity);
 
-  /// {@macro fl_utilities.src.widgets.CustomListViewItemDelegate}
+  /// {@macro fl_utilities.widgets.CustomListViewItemDelegate}
   ///
   /// This constructor will use [dimension] on both [mainAxisLength] and
   /// [crossAxisLength].
   const CustomListViewItemDelegate.square({
+    this.key,
     double? dimension,
     this.crossAxisAlignment = CustomListViewItemAlignment.center,
     this.child,
-  })  : mainAxisLength = dimension,
+  })  : assert(dimension != double.infinity),
+        mainAxisLength = dimension,
         crossAxisLength = dimension;
+
+  /// [CustomListView] item key.
+  final Key? key;
 
   /// The length of the item on the [CustomListView] main axis.
   ///
@@ -203,27 +193,121 @@ class CustomListViewItemDelegate {
   final Widget? child;
 }
 
-/// How the [CustomListView] items should be placed along the cross axis.
+/// How the [CustomListView] children should be placed along the cross axis.
 ///
 /// See also:
 /// - [CustomListViewItemDelegate], delegate to manipulate [CustomListView] items.
 enum CustomListViewItemAlignment {
-  /// Place the items with their start edge aligned with the start side of
+  /// Place the children with their start edge aligned with the start side of
   /// the cross axis.
   ///
   /// Affected by [CustomListView.scrollDirection] and [CustomListView.reverse].
   start,
 
-  /// Place the items to the end of the cross axis as possible.
+  /// Place the children to the end of the cross axis as possible.
   ///
   /// Affected by [CustomListView.scrollDirection] and [CustomListView.reverse].
   end,
 
-  /// Place the items to the center of the cross axis.
+  /// Place the children to the center of the cross axis.
+  ///
+  /// [CustomListViewItemDelegate.crossAxisAlignment] default value.
   center,
 
-  /// Stretch the item to fill the cross axis.
+  /// Stretch the children to fill the cross axis.
   ///
   /// Will ignore [CustomListViewItemDelegate.crossAxisLength].
   stretch,
+}
+
+/// {@template fl_utilities.widgets.CustomListViewItem}
+/// Widget implementation for [CustomListViewItemDelegate].
+///
+/// Not to be used directly.
+/// {@endtemplate}
+final class CustomListViewItem extends StatelessWidget {
+  /// {@macro fl_utilities.widgets.CustomListViewItem}
+  @protected
+  @visibleForTesting
+  CustomListViewItem({
+    required this.delegate,
+    required this.scrollDirection,
+    required this.reverse,
+  }) : super(key: delegate.key);
+
+  final CustomListViewItemDelegate delegate;
+  final Axis scrollDirection;
+  final bool reverse;
+
+  /// The widget is stretched.
+  bool get isStretch =>
+      delegate.crossAxisLength == null ||
+      delegate.crossAxisAlignment == CustomListViewItemAlignment.stretch;
+
+  bool get _isVert => scrollDirection == Axis.vertical;
+
+  double? get _mainW => !_isVert ? delegate.mainAxisLength : null;
+  double? get _mainH => _isVert ? delegate.mainAxisLength : null;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isStretch) {
+      return SizedBox(
+        width: _mainW,
+        height: _mainH,
+        child: delegate.child,
+      );
+    }
+
+    final crossAxisDirection = getAxisDirectionFromAxisReverseAndDirectionality(
+      context,
+      flipAxis(scrollDirection),
+      reverse,
+    );
+
+    return Container(
+      width: _mainW,
+      height: _mainH,
+      alignment: switch (delegate.crossAxisAlignment) {
+        CustomListViewItemAlignment.start => switch (crossAxisDirection) {
+            AxisDirection.down => Alignment.topCenter,
+            AxisDirection.up => Alignment.bottomCenter,
+            AxisDirection.right => Alignment.centerLeft,
+            AxisDirection.left => Alignment.centerRight,
+          },
+        CustomListViewItemAlignment.end => switch (crossAxisDirection) {
+            AxisDirection.down => Alignment.bottomCenter,
+            AxisDirection.up => Alignment.topCenter,
+            AxisDirection.right => Alignment.centerRight,
+            AxisDirection.left => Alignment.centerLeft,
+          },
+        _ => Alignment.center,
+      },
+      child: SizedBox(
+        width: _isVert ? delegate.crossAxisLength : null,
+        height: !_isVert ? delegate.crossAxisLength : null,
+        child: delegate.child,
+      ),
+    );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+
+    final crossAxisLen = isStretch ? null : delegate.crossAxisLength;
+
+    final width = _isVert ? crossAxisLen : delegate.mainAxisLength;
+    final height = _isVert ? delegate.mainAxisLength : crossAxisLen;
+
+    properties
+      ..add(DoubleProperty('width', width, defaultValue: null))
+      ..add(DoubleProperty('height', height, defaultValue: null))
+      ..add(EnumProperty<CustomListViewItemAlignment>(
+        'crossAxisAlignment',
+        delegate.crossAxisAlignment,
+        defaultValue: CustomListViewItemAlignment.center,
+        level: isStretch ? DiagnosticLevel.hidden : DiagnosticLevel.info,
+      ));
+  }
 }
