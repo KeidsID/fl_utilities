@@ -83,8 +83,9 @@ class _MyAppState extends State<MyApp> {
                       isVertDirection ? Axis.vertical : Axis.horizontal,
                   reverse: isReversed,
                   itemCount: 100,
-                  itemBuilder: (_, index) => CustomListViewItemDelegate.square(
-                    dimension: 160.0,
+                  itemBuilder: (_, index) => CustomListViewItemDelegate(
+                    mainAxisLength: 160.0,
+                    crossAxisLength: 240.0,
                     crossAxisAlignment: crossAxisAlignment,
                     child: Card(
                       child: InkWell(

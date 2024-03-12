@@ -103,6 +103,9 @@ class CustomListView extends ListView {
         );
 
   /// {@macro fl_utilities.widgets.CustomListView}
+  ///
+  /// This constructor is [CustomListView.builder] with a [separatorBuilder].
+  /// So each item will have a separator.
   CustomListView.separated({
     super.key,
     super.scrollDirection,
@@ -179,11 +182,14 @@ class CustomListViewItemDelegate {
   /// The length of the item on the [CustomListView] main axis.
   ///
   /// If `null`, then use the [child] size constraint.
+  ///
+  /// `double.infinity` will throw [AssertionError].
   final double? mainAxisLength;
 
   /// The length of the item on the [CustomListView] cross axis.
   ///
-  /// If `null`, the cross axis length will be stretched by default.
+  /// If `null`, the cross axis length will be stretched by default
+  /// (same as `double.infinity`).
   final double? crossAxisLength;
 
   /// The cross axis alignment of the item.
@@ -244,21 +250,20 @@ final class CustomListViewItem extends StatelessWidget {
       delegate.crossAxisLength == null ||
       delegate.crossAxisAlignment == CustomListViewItemAlignment.stretch;
 
-  bool get _isVert => scrollDirection == Axis.vertical;
+  /// Actual cross axis length that visible.
+  double? get _crossAxisLen =>
+      isStretch ? double.infinity : delegate.crossAxisLength;
 
-  double? get _mainW => !_isVert ? delegate.mainAxisLength : null;
-  double? get _mainH => _isVert ? delegate.mainAxisLength : null;
+  /// The widget width.
+  double? get width => _isVert ? _crossAxisLen : delegate.mainAxisLength;
+
+  /// The widget height.
+  double? get height => _isVert ? delegate.mainAxisLength : _crossAxisLen;
+
+  bool get _isVert => scrollDirection == Axis.vertical;
 
   @override
   Widget build(BuildContext context) {
-    if (isStretch) {
-      return SizedBox(
-        width: _mainW,
-        height: _mainH,
-        child: delegate.child,
-      );
-    }
-
     final crossAxisDirection = getAxisDirectionFromAxisReverseAndDirectionality(
       context,
       flipAxis(scrollDirection),
@@ -266,8 +271,8 @@ final class CustomListViewItem extends StatelessWidget {
     );
 
     return Container(
-      width: _mainW,
-      height: _mainH,
+      width: !_isVert ? delegate.mainAxisLength : null,
+      height: _isVert ? delegate.mainAxisLength : null,
       alignment: switch (delegate.crossAxisAlignment) {
         CustomListViewItemAlignment.start => switch (crossAxisDirection) {
             AxisDirection.down => Alignment.topCenter,
@@ -283,22 +288,19 @@ final class CustomListViewItem extends StatelessWidget {
           },
         _ => Alignment.center,
       },
-      child: SizedBox(
-        width: _isVert ? delegate.crossAxisLength : null,
-        height: !_isVert ? delegate.crossAxisLength : null,
-        child: delegate.child,
-      ),
+      child: isStretch
+          ? delegate.child
+          : SizedBox(
+              width: _isVert ? delegate.crossAxisLength : null,
+              height: !_isVert ? delegate.crossAxisLength : null,
+              child: delegate.child,
+            ),
     );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-
-    final crossAxisLen = isStretch ? null : delegate.crossAxisLength;
-
-    final width = _isVert ? crossAxisLen : delegate.mainAxisLength;
-    final height = _isVert ? delegate.mainAxisLength : crossAxisLen;
 
     properties
       ..add(DoubleProperty('width', width, defaultValue: null))
