@@ -24,9 +24,6 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Run tests with coverage
-        run: flutter test --coverage
-
       - name: Test with min 80% coverage
         run: |
           flutter test --coverage
