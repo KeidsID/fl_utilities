@@ -23,7 +23,7 @@ and the Flutter guide for
 ![pub points](https://img.shields.io/pub/points/fl_utilities?labelColor=333333&color=01579b)
 
 Simple flutter utilities such as shorthands extension on [BuildContext],
-`debounce` extension on [ValueChanged],`SizedScrollableArea` widget, and more.
+`debounce` extension on [ValueChanged], `CustomListView` widget, and more.
 
 This package depend on SDKs so it can be used in any Flutter project.
 
@@ -41,7 +41,7 @@ or manually add it to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  fl_utilities: ^1.0.0
+  fl_utilities: ^2.0.0
 ```
 
 Then you can use it in your project.
@@ -75,4 +75,21 @@ TextField(
 );
 ```
 
-Visit [API Reference][library-doc] for more utilities.
+Customize [ListView] item cross axis length using [CustomListView]:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:fl_utilities/fl_utilities.dart';
+
+CustomListView(
+  children: [
+    CustomListViewItemDelegate(
+      mainAxisLength: 160.0,
+      crossAxisLength: 240.0,
+      child: const Card(),
+    ),
+  ]
+);
+```
+
+Visit [API Reference][library-doc] for more details.

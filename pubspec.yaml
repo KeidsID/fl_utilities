@@ -1,8 +1,6 @@
 name: fl_utilities
-description:
-  Simple flutter utilities such as shorthands extension on BuildContext,
-  debounce extension on ValueChanged, SizedScrollableArea widget, and more.
-version: 1.0.0
+description: Simple flutter utilities that may be useful.
+version: 2.0.0
 repository: https://github.com/KeidsID/fl_utilities
 
 environment:
@@ -19,7 +17,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  equatable: ^2.0.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

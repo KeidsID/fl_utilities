@@ -1,4 +1,4 @@
-# unreleased
+# 2.0.0
 
 ### Added
 
@@ -65,11 +65,11 @@ But why replace [SizedScrollableArea] with [CustomListView]?
 
   ```dart
   CustomListView(
+    crossAxisAlignment: CustomListViewItemAlignment.center, // default
     children: [
       CustomListViewItemDelegate(
         mainAxisLength: 200.0,
         crossAxisLength: 200.0,
-        crossAxisAlignment: CustomListViewItemAlignment.center, // default
         child: Card(),
       ),
     ],
