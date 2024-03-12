@@ -3,17 +3,43 @@ name: Publish to pub.dev
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+*"
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 jobs:
   publish:
+    defaults:
+      run:
+        working-directory: "."
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     strategy:
       matrix:
         flutter-version: [3.10.x]
+        flutter-channel: [stable]
 
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_pub_publish.yml@v1
-    with:
-      runs_on: ubuntu-latest
-      flutter_channel: "stable"
-      flutter_version: ${{ matrix.flutter-version }}
-      pub_credentials: secrets.PUB_CREDENTIALS
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+          channel: ${{ matrix.flutter-channel }}
+          cache: true
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🔐 Setup Pub Credentials
+        run: |
+          mkdir -p $XDG_CONFIG_HOME/dart
+          echo '${{secrets.PUB_CREDENTIALS}}' | base64 --decode > "$XDG_CONFIG_HOME/dart/pub-credentials.json"
+
+      - name: 🌵 Dry Run
+        run: flutter pub publish --dry-run
+
+      - name: 📢 Publish
+        run: flutter pub publish -f
