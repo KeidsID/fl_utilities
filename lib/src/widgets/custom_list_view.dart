@@ -50,10 +50,12 @@ class CustomListView extends ListView {
     super.keyboardDismissBehavior,
     super.restorationId,
     super.clipBehavior,
+    this.crossAxisAlignment = CustomListViewItemAlignment.center,
   }) : super(
           children: children.map((e) {
             return CustomListViewItem(
               delegate: e,
+              crossAxisAlignment: crossAxisAlignment,
               scrollDirection: scrollDirection,
               reverse: reverse,
             );
@@ -88,6 +90,7 @@ class CustomListView extends ListView {
     super.keyboardDismissBehavior,
     super.restorationId,
     super.clipBehavior,
+    this.crossAxisAlignment = CustomListViewItemAlignment.center,
   }) : super.builder(
           itemBuilder: (context, index) {
             final delegate = itemBuilder(context, index);
@@ -96,6 +99,7 @@ class CustomListView extends ListView {
 
             return CustomListViewItem(
               delegate: delegate,
+              crossAxisAlignment: crossAxisAlignment,
               scrollDirection: scrollDirection,
               reverse: reverse,
             );
@@ -127,6 +131,7 @@ class CustomListView extends ListView {
     super.keyboardDismissBehavior,
     super.restorationId,
     super.clipBehavior,
+    this.crossAxisAlignment = CustomListViewItemAlignment.center,
   }) : super.separated(
           itemBuilder: (context, index) {
             final delegate = itemBuilder(context, index);
@@ -135,16 +140,23 @@ class CustomListView extends ListView {
 
             return CustomListViewItem(
               delegate: delegate,
+              crossAxisAlignment: crossAxisAlignment,
               scrollDirection: scrollDirection,
               reverse: reverse,
             );
           },
           separatorBuilder: (context, index) => CustomListViewItem(
             delegate: separatorBuilder(context, index),
+            crossAxisAlignment: crossAxisAlignment,
             scrollDirection: scrollDirection,
             reverse: reverse,
           ),
         );
+
+  /// How the [CustomListView] children should be placed along the cross axis.
+  ///
+  /// Defaults to [CustomListViewItemAlignment.center].
+  final CustomListViewItemAlignment crossAxisAlignment;
 }
 
 /// {@template fl_utilities.widgets.CustomListViewItemDelegate}
@@ -159,7 +171,7 @@ class CustomListViewItemDelegate {
     this.key,
     this.mainAxisLength,
     this.crossAxisLength,
-    this.crossAxisAlignment = CustomListViewItemAlignment.center,
+    this.crossAxisAlignment,
     this.child,
   }) : assert(mainAxisLength != double.infinity);
 
@@ -170,7 +182,7 @@ class CustomListViewItemDelegate {
   const CustomListViewItemDelegate.square({
     this.key,
     double? dimension,
-    this.crossAxisAlignment = CustomListViewItemAlignment.center,
+    this.crossAxisAlignment,
     this.child,
   })  : assert(dimension != double.infinity),
         mainAxisLength = dimension,
@@ -193,7 +205,9 @@ class CustomListViewItemDelegate {
   final double? crossAxisLength;
 
   /// The cross axis alignment of the item.
-  final CustomListViewItemAlignment crossAxisAlignment;
+  ///
+  /// If `null`, then use [CustomListView.crossAxisAlignment] instead.
+  final CustomListViewItemAlignment? crossAxisAlignment;
 
   /// The actual item widget to render.
   final Widget? child;
@@ -237,30 +251,44 @@ final class CustomListViewItem extends StatelessWidget {
   @visibleForTesting
   CustomListViewItem({
     required this.delegate,
+    required this.crossAxisAlignment,
     required this.scrollDirection,
     required this.reverse,
   }) : super(key: delegate.key);
 
+  /// {@macro fl_utilities.widgets.CustomListViewItemDelegate}
   final CustomListViewItemDelegate delegate;
+
+  /// The cross axis alignment of the item from [CustomListView].
+  final CustomListViewItemAlignment crossAxisAlignment;
+
+  /// The scroll direction of the [CustomListView].
   final Axis scrollDirection;
+
+  /// Whether the [CustomListView] is reversed.
   final bool reverse;
+
+  /// The cross axis alignment of the item.
+  CustomListViewItemAlignment get _crossAxisAlignment =>
+      delegate.crossAxisAlignment ?? crossAxisAlignment;
 
   /// The widget is stretched.
   bool get isStretch =>
       delegate.crossAxisLength == null ||
-      delegate.crossAxisAlignment == CustomListViewItemAlignment.stretch;
+      _crossAxisAlignment == CustomListViewItemAlignment.stretch;
 
   /// Actual cross axis length that visible.
-  double? get _crossAxisLen =>
+  double? get _crossAxisLength =>
       isStretch ? double.infinity : delegate.crossAxisLength;
 
   /// The widget width.
-  double? get width => _isVert ? _crossAxisLen : delegate.mainAxisLength;
+  double? get width => _isVertical ? _crossAxisLength : delegate.mainAxisLength;
 
   /// The widget height.
-  double? get height => _isVert ? delegate.mainAxisLength : _crossAxisLen;
+  double? get height => _isVertical ? delegate.mainAxisLength : _crossAxisLength;
 
-  bool get _isVert => scrollDirection == Axis.vertical;
+  /// Scroll direction is vertical.
+  bool get _isVertical => scrollDirection == Axis.vertical;
 
   @override
   Widget build(BuildContext context) {
@@ -271,9 +299,9 @@ final class CustomListViewItem extends StatelessWidget {
     );
 
     return Container(
-      width: !_isVert ? delegate.mainAxisLength : null,
-      height: _isVert ? delegate.mainAxisLength : null,
-      alignment: switch (delegate.crossAxisAlignment) {
+      width: !_isVertical ? delegate.mainAxisLength : null,
+      height: _isVertical ? delegate.mainAxisLength : null,
+      alignment: switch (_crossAxisAlignment) {
         CustomListViewItemAlignment.start => switch (crossAxisDirection) {
             AxisDirection.down => Alignment.topCenter,
             AxisDirection.up => Alignment.bottomCenter,
@@ -291,8 +319,8 @@ final class CustomListViewItem extends StatelessWidget {
       child: isStretch
           ? delegate.child
           : SizedBox(
-              width: _isVert ? delegate.crossAxisLength : null,
-              height: !_isVert ? delegate.crossAxisLength : null,
+              width: _isVertical ? delegate.crossAxisLength : null,
+              height: !_isVertical ? delegate.crossAxisLength : null,
               child: delegate.child,
             ),
     );
@@ -307,7 +335,7 @@ final class CustomListViewItem extends StatelessWidget {
       ..add(DoubleProperty('height', height, defaultValue: null))
       ..add(EnumProperty<CustomListViewItemAlignment>(
         'crossAxisAlignment',
-        delegate.crossAxisAlignment,
+        _crossAxisAlignment,
         defaultValue: CustomListViewItemAlignment.center,
         level: isStretch ? DiagnosticLevel.hidden : DiagnosticLevel.info,
       ));

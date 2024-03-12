@@ -82,11 +82,11 @@ class _MyAppState extends State<MyApp> {
                   scrollDirection:
                       isVertDirection ? Axis.vertical : Axis.horizontal,
                   reverse: isReversed,
+                  crossAxisAlignment: crossAxisAlignment,
                   itemCount: 100,
                   itemBuilder: (_, index) => CustomListViewItemDelegate(
                     mainAxisLength: 160.0,
                     crossAxisLength: 240.0,
-                    crossAxisAlignment: crossAxisAlignment,
                     child: Card(
                       child: InkWell(
                         onTap: () {},
