@@ -7,16 +7,13 @@ on:
 
 jobs:
   publish:
-    permissions:
-      id-token: write
+    strategy:
+      matrix:
+        flutter-version: [3.10.x]
 
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1
-
-      - name: Install dependencies
-        run: dart pub get
-
-      - name: Publish
-        run: dart pub publish --force
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_pub_publish.yml@v1
+    with:
+      runs_on: ubuntu-latest
+      flutter_channel: "stable"
+      flutter_version: ${{ matrix.flutter-version }}
+      pub_credentials: secrets.PUB_CREDENTIALS
