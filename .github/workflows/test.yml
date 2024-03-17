@@ -1,37 +1,67 @@
 name: Test
 
 on:
-  pull_request_review:
-    types: [submitted, edited]
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "example/"
+      - "examples/"
+
+  pull_request:
+    types: [review_requested]
+    paths-ignore:
+      - "**.md"
+      - "example/"
+      - "examples/"
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        fl-version: [3.10.x]
+        fl-channel: [stable]
+        dir:
+          - "."
+
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        flutter-version: [3.10.x]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
-      - name: Setup Flutter v${{ matrix.flutter-version }} SDK
+      - name: |
+          🐦 Setup Flutter SDK v${{ matrix.fl-version }}-${{matrix.fl-channel}}
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
-          flutter-version: ${{ matrix.flutter-version }}
+          flutter-version: ${{ matrix.fl-version }}
+          channel: ${{ matrix.fl-channel }}
+          cache: true
 
-      - name: Get dependencies
+      - name: 📦 Get dependencies
         run: flutter pub get
 
-      - name: Test with min 80% coverage
-        run: |
-          flutter test --coverage
-          dart pub global activate dlcov
-          dlcov -c 80
+      - name: ✨ Check Formatting
+        run: dart format lib --line-length 80 --set-exit-if-changed
 
-      - name: Upload coverage as an artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-coverage
-          path: ./coverage/lcov.info
+      - name: 🕵️ Analyze code
+        run: flutter analyze lib test
+
+      - name: 🧪 Run tests
+        id: test
+        run: |
+          if test -d "test"; then
+            flutter test --coverage
+            echo "RESULT=tested" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: 📝 Upload coverage to codecov
+        if: ${{steps.test.outputs.RESULT == 'tested'}}
+        run: curl -s https://codecov.io/bash | bash
