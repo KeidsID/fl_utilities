@@ -7,27 +7,30 @@ on:
 
 jobs:
   publish:
-    defaults:
-      run:
-        working-directory: "."
+    strategy:
+      fail-fast: false
+      matrix:
+        fl-version: [3.10.x]
+        fl-channel: [stable]
+        dir:
+          - "."
 
     runs-on: ubuntu-latest
-    timeout-minutes: 5
 
-    strategy:
-      matrix:
-        flutter-version: [3.10.x]
-        flutter-channel: [stable]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
 
     steps:
       - name: 📚 Git Checkout
         uses: actions/checkout@v4
 
-      - name: 🐦 Setup Flutter
+      - name: |
+          🐦 Setup Flutter SDK v${{ matrix.fl-version }}-${{matrix.fl-channel}}
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ matrix.flutter-version }}
-          channel: ${{ matrix.flutter-channel }}
+          flutter-version: ${{ matrix.fl-version }}
+          channel: ${{ matrix.fl-channel }}
           cache: true
 
       - name: 📦 Install Dependencies

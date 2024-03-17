@@ -285,7 +285,8 @@ final class CustomListViewItem extends StatelessWidget {
   double? get width => _isVertical ? _crossAxisLength : delegate.mainAxisLength;
 
   /// The widget height.
-  double? get height => _isVertical ? delegate.mainAxisLength : _crossAxisLength;
+  double? get height =>
+      _isVertical ? delegate.mainAxisLength : _crossAxisLength;
 
   /// Scroll direction is vertical.
   bool get _isVertical => scrollDirection == Axis.vertical;

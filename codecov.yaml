@@ -1,3 +1,11 @@
+coverage:
+  round: down
+  range: "80...90"
+  status:
+    project:
+      default:
+        threshold: 80
+
 ignore:
   - "example/"
   - "examples/"
