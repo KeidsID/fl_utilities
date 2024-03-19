@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fl-version: [3.10.x]
+        fl-version: [3.13.x]
         fl-channel: [stable]
         dir:
           - "."
