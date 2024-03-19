@@ -1,35 +1,61 @@
+# unreleased
+
+- feat: `CustomListViewDelegate`, default item delegate for the `CustomListView`
+  children. Used on `CustomListView.viewDelegate`.
+- _deprecated_: `CustomListView.crossAxisAlignment`, is now deprecated in favor of
+  `CustomListView.viewDelegate`.
+
+  Instead of:
+  ```dart
+  CustomListView(
+    crossAxisAlignment: CustomListViewItemAlignment.end,
+  );
+  ```
+
+  Do:
+  ```dart
+  CustomListView(
+    viewDelegate: CustomListViewDelegate(
+      crossAxisAlignment: CustomListViewItemAlignment.end,
+      // can also specify other [CustomListViewItemDelegate] values
+      // mainAxisLength: 80.0,
+      // crossAxisLength: 80.0,
+    ),
+  );
+  ```
+
 # 2.0.0
 
 ### Added
 
-- [CustomListView], a custom [ListView] with customizeable children.
-- [CustomListViewItemDelegate], delegate to customize [CustomListView] item.
-- [CustomListViewItemAlignment], an enum to control item cross axis alignment of
-  [CustomListView].
-- [CustomListViewItem], a widget implementation for
-  [CustomListViewItemDelegate], not to be used directly.
+- `CustomListView], a custom `ListView` with customizeable children.
+- `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
+- `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
+  `CustomListView`.
+- `CustomListViewItem`, a widget implementation for
+  `CustomListViewItemDelegate`, not to be used directly.
 
 ### Removed
 
-- [SizedScrollableArea]
+- `SizedScrollableArea`
 
 ## Breaking Changes
 
-The main reason why [SizedScrollableArea] exist because there's some cases that
-we need to modify the [ListView] item cross axis length, but we still wanted the
+The main reason why `SizedScrollableArea` exist because there's some cases that
+we need to modify the `ListView` item cross axis length, but we still wanted the
 scroll area fill the whole screen.
 
-But why replace [SizedScrollableArea] with [CustomListView]?
+But why replace `SizedScrollableArea` with `CustomListView`?
 
-- The [SizedScrollableArea] widget is too verbose (Need same controller to
+- The `SizedScrollableArea` widget is too verbose (Need same controller to
   control scroll).
-- The [CustomListView] widget is more flexible because it just a [ListView] with
+- The `CustomListView` widget is more flexible because it just a `ListView` with
   some extra features (such as manipulate cross axis length).
-- And actually [SizedScrollableArea] is not stable yet (too much bugs).
+- And actually `SizedScrollableArea` is not stable yet (too much bugs).
 
 ### Migrate Guide
 
-- [SizedScrollableArea] -> [CustomListView]
+- `SizedScrollableArea` -> `CustomListView`
 
   Before:
 
@@ -87,11 +113,11 @@ But why replace [SizedScrollableArea] with [CustomListView]?
 
 ## Fixed
 
-- [TextX.applyOpacity] invalid style reference for null style [Text].
+- `TextX.applyOpacity` invalid style reference for null style `Text`.
 
 ## Others
 
-- Add [TextStyleX.applyOpacity], extension on [TextStyle] to apply opacity.
+- Add `TextStyleX.applyOpacity`, extension on `TextStyle` to apply opacity.
 - Update docs.
 
 # 0.1.0
@@ -100,7 +126,7 @@ But why replace [SizedScrollableArea] with [CustomListView]?
 
 ### Extensions
 
-- on [BuildContext]:
+- on `BuildContext`:
 
   - `theme`, shorthand for `Theme.of(context)`.
   - `colorScheme`, shorthand for `Theme.of(context).colorScheme`.
@@ -109,18 +135,18 @@ But why replace [SizedScrollableArea] with [CustomListView]?
   - `scaffold`, shorthand for `Scaffold.of(context)`.
   - `scaffoldMessenger`, shorthand for `ScaffoldMessenger.of(context)`.
 
-- on [Text]:
+- on `Text`:
 
-  - `applyOpacity`, create a copy of [Text] with applied opacity.
+  - `applyOpacity`, create a copy of `Text` with applied opacity.
 
-- on [ValueChanged]:
+- on `ValueChanged`:
   - `debounce`, prevent callback from being called too often.
 
 ### Widgets
 
 - `SizedScrollableArea`, a scrollable area that can be sized. It act as extra
   scrollable area (which detect touch and mouse wheel pointer) if your
-  [Scrollable] widget must have fixed size.
+  `Scrollable` widget must have fixed size.
 
 ### Others
 

@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 
 import 'package:fl_utilities/fl_utilities.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const CustomListViewExampleApp());
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class CustomListViewExampleApp extends StatefulWidget {
+  const CustomListViewExampleApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<CustomListViewExampleApp> createState() =>
+      _CustomListViewExampleAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _CustomListViewExampleAppState extends State<CustomListViewExampleApp> {
   bool isVertDirection = true;
   bool isReversed = false;
   CustomListViewItemAlignment crossAxisAlignment =
@@ -21,8 +22,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(useMaterial3: true),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.system,
 
       // allow mouse to drag.
@@ -41,6 +42,8 @@ class _MyAppState extends State<MyApp> {
               Wrap(
                 spacing: 16.0,
                 runSpacing: 16.0,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -82,12 +85,16 @@ class _MyAppState extends State<MyApp> {
                   scrollDirection:
                       isVertDirection ? Axis.vertical : Axis.horizontal,
                   reverse: isReversed,
-                  crossAxisAlignment: crossAxisAlignment,
-                  itemCount: 100,
-                  itemBuilder: (_, index) => CustomListViewItemDelegate(
+                  padding: const EdgeInsets.all(16.0),
+                  viewDelegate: CustomListViewDelegate(
                     mainAxisLength: 160.0,
                     crossAxisLength: 240.0,
+                    crossAxisAlignment: crossAxisAlignment,
+                  ),
+                  itemCount: 100,
+                  itemBuilder: (_, index) => CustomListViewItemDelegate(
                     child: Card(
+                      clipBehavior: Clip.hardEdge,
                       child: InkWell(
                         onTap: () {},
                         child: Center(child: Text('#$index')),
