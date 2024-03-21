@@ -15,13 +15,35 @@ typedef IndexedCustomListViewBuilder = CustomListViewItemDelegate Function(
 /// Unlike the [ListView] that force its children cross axis length to stretch,
 /// this widget can manipulate the cross axis length of the item.
 ///
-/// {@tool dartpad}
-/// ** See code in example/lib/src/widgets/custom_list_view.dart **
+/// {@tool snippet}
+/// ```dart
+/// CustomListView(
+///   // adjust default item delegate here
+///   viewDelegate: CustomListViewDelegate(
+///     mainAxisLength: 200.0,
+///     crossAxisLength: 400.0,
+///
+///     // alignment can also be specified
+///     crossAxisAlignment: CustomListViewItemAlignment.center,
+///   ),
+///   children: [
+///     CustomListViewItemDelegate(
+///       // overrides default
+///       mainAxisLength: 400.0,
+///       crossAxisLength: 200.0,
+///       crossAxisAlignment: CustomListViewItemAlignment.start,
+///       child: Text('Title'), // actual item that will be displayed
+///     ),
+///     CustomListViewItemDelegate(child: Card()),
+///   ],
+/// );
+/// ```
 /// {@end-tool}
 ///
 /// See also:
 /// - [CustomListViewItemDelegate], delegate to customize children.
 /// - [CustomListViewDelegate], default delegate for the children.
+/// - [Demo link](https://github.com/KeidsID/fl_utilities/blob/main/example/lib/src/widgets/custom_list_view.dart).
 /// {@endtemplate}
 class CustomListView extends ListView {
   /// {@macro fl_utilities.widgets.CustomListView}
@@ -238,7 +260,8 @@ abstract base class _CustomListViewItemDelegate {
   ///
   /// If `null`, then [CustomListViewDelegate.crossAxisAlignment] will be used
   /// instead.
-  CustomListViewItemAlignment? get crossAxisAlignment;
+  CustomListViewItemAlignment? get crossAxisAlignment =>
+      throw UnimplementedError();
 }
 
 /// How the [CustomListView] children should be placed along the cross axis.
@@ -247,15 +270,14 @@ abstract base class _CustomListViewItemDelegate {
 /// - [CustomListViewItemDelegate], delegate to manipulate [CustomListView] items.
 /// - [CustomListViewDelegate], act as default item delegate values.
 enum CustomListViewItemAlignment {
-  /// Place the children with their start edge aligned with the start side of
-  /// the cross axis.
+  /// Place the children to the start of the cross axis.
   ///
-  /// Affected by [CustomListView.scrollDirection] and [CustomListView.reverse].
+  /// Affected by [CustomListView.reverse].
   start,
 
   /// Place the children to the end of the cross axis as possible.
   ///
-  /// Affected by [CustomListView.scrollDirection] and [CustomListView.reverse].
+  /// Affected by [CustomListView.reverse].
   end,
 
   /// Place the children to the center of the cross axis.
@@ -275,7 +297,7 @@ enum CustomListViewItemAlignment {
 /// With this you can manipulate the cross axis length of the item. Unlike
 /// [ListView] that force its item cross axis length to stretch.
 ///
-/// [CustomListView.viewDelegate] will be used as interface default.
+/// [CustomListView.viewDelegate] will be used as delegate default.
 ///
 /// See also:
 /// - [CustomListViewDelegate], default values for this delegate.
@@ -309,7 +331,7 @@ final class CustomListViewItemDelegate extends _CustomListViewItemDelegate {
 }
 
 /// {@template fl_utilities.widgets.CustomListViewDelegate}
-/// Used as [CustomListViewItemDelegate] default values.
+/// Used as [CustomListView] item delegate default.
 ///
 /// Use this instead applying delegate values for each item.
 /// {@endtemplate}
@@ -445,9 +467,6 @@ final class CustomListViewItem extends StatelessWidget {
   bool get isExtended =>
       viewDelegate.itemExtent != null || viewDelegate.prototypeItem != null;
 
-  /// Actual cross axis length that visible.
-  double? get crossAxisLength => isStretch ? double.infinity : _crossAxisLength;
-
   /// The widget is stretched.
   ///
   /// Will ignore `crossAxisLength` from delegates.
@@ -455,14 +474,20 @@ final class CustomListViewItem extends StatelessWidget {
       _crossAxisLength == null ||
       crossAxisAlignment == CustomListViewItemAlignment.stretch;
 
-  /// The widget width.
-  double? get width => _isVertical ? crossAxisLength : _mainAxisLength;
-
-  /// The widget height.
-  double? get height => _isVertical ? _mainAxisLength : crossAxisLength;
-
   /// Scroll direction is vertical.
   bool get _isVertical => viewDelegate.scrollDirection == Axis.vertical;
+
+  /// Actual cross axis length that visible.
+  ///
+  /// For debug purposes.
+  double? get _dCrossAxisLength =>
+      isStretch ? double.infinity : _crossAxisLength;
+
+  /// The widget width.
+  double? get width => _isVertical ? _dCrossAxisLength : _mainAxisLength;
+
+  /// The widget height.
+  double? get height => _isVertical ? _mainAxisLength : _dCrossAxisLength;
 
   @override
   Widget build(BuildContext context) {
@@ -508,6 +533,7 @@ final class CustomListViewItem extends StatelessWidget {
       ..add(FlagProperty(
         'isExtended',
         value: isExtended,
+        defaultValue: false,
         ifTrue: 'extended by "${viewDelegate.itemExtent ?? 'Widget'}"',
         ifFalse: 'not extended',
         level: isExtended ? DiagnosticLevel.info : DiagnosticLevel.hidden,

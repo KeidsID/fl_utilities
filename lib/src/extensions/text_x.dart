@@ -11,15 +11,17 @@ extension TextX on Text {
   ///
   /// [opacity] should be a value between 0.0 and 1.0.
   ///
+  /// {@tool snippet}
+  /// ```dart
+  /// Text('Hello World').applyOpacity(opacity: 0.5);
+  /// ```
+  /// {@end-tool}
+  ///
   /// WARNING: This method is create a new [Text] instance, so the [Text.key]
   /// will not be used. Try apply it on the [key] argument instead.
   ///
-  /// {@tool dartpad}
-  /// ** See code in example/lib/src/extensions/text_x.dart **
-  /// {@end-tool}
-  ///
   /// See also:
-  /// - [TextStyleX.applyOpacity], extension to apply opacity on text style.
+  /// - [TextStyleX.applyOpacity], extension to apply opacity on [TextStyle].
   Widget applyOpacity({Key? key, double opacity = 1.0}) {
     final text = data;
 
@@ -86,6 +88,12 @@ extension TextStyleX on TextStyle {
   /// the specified [opacity].
   ///
   /// [opacity] should be a value between 0.0 and 1.0.
+  /// 
+  /// {@tool snippet}
+  /// ```dart
+  /// TextStyle(color: Colors.red).applyOpacity(0.5);
+  /// ```
+  /// {@end-tool}
   ///
   /// See also:
   /// - [TextX.applyOpacity], extension to apply opacity on [Text] widget.
