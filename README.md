@@ -18,9 +18,10 @@ and the Flutter guide for
 
 ![Dart version](https://img.shields.io/badge/SDK-^3.0.0-red?style=flat&logo=dart&logoColor=2cb8f7&labelColor=333333&color=01579b)
 ![Flutter](https://img.shields.io/badge/SDK-^3.10.0-red?style=flat&logo=flutter&logoColor=2cb8f7&labelColor=333333&color=01579b)
-
-[![codecov](https://codecov.io/gh/KeidsID/fl_utilities/graph/badge.svg?token=PNFMB749KY)](https://codecov.io/gh/KeidsID/fl_utilities)
 ![pub points](https://img.shields.io/pub/points/fl_utilities?labelColor=333333&color=01579b)
+
+[![Test](https://github.com/KeidsID/fl_utilities/actions/workflows/test.yml/badge.svg)](https://github.com/KeidsID/fl_utilities/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/KeidsID/fl_utilities/graph/badge.svg?token=PNFMB749KY)](https://codecov.io/gh/KeidsID/fl_utilities)
 
 Simple flutter utilities such as shorthands extension on [BuildContext],
 `debounce` extension on [ValueChanged], `CustomListView` widget, and more.
@@ -41,7 +42,7 @@ or manually add it to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  fl_utilities: ^2.0.0
+  fl_utilities: ^2.0.1
 ```
 
 Then you can use it in your project.
@@ -82,10 +83,21 @@ import 'package:flutter/material.dart';
 import 'package:fl_utilities/fl_utilities.dart';
 
 CustomListView(
+  // default item delegate
+  viewDelegate: CustomListViewDelegate(
+    mainAxisLength: 160.0,
+    crossAxisLength: 240.0,
+    crossAxisAlignment: CustomListViewItemAlignment.center,
+  )
   children: [
     CustomListViewItemDelegate(
-      mainAxisLength: 160.0,
-      crossAxisLength: 240.0,
+      // overrides default delegate
+      mainAxisLength: 240.0,
+      crossAxisLength: 160.0,
+      child: const Card(), // actual list item
+    ),
+    CustomListViewItemDelegate(
+      // using default delegate
       child: const Card(),
     ),
   ]

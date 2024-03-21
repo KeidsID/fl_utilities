@@ -1,4 +1,4 @@
-# unreleased
+# 2.0.1
 
 - feat: `CustomListViewDelegate`, default item delegate for the `CustomListView`
   children. Used on `CustomListView.viewDelegate`.
