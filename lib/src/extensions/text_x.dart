@@ -88,7 +88,7 @@ extension TextStyleX on TextStyle {
   /// the specified [opacity].
   ///
   /// [opacity] should be a value between 0.0 and 1.0.
-  /// 
+  ///
   /// {@tool snippet}
   /// ```dart
   /// TextStyle(color: Colors.red).applyOpacity(0.5);
