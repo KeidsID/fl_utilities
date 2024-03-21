@@ -5,6 +5,6 @@
   "runPubGetOnSdkChanges": true,
   "flavors": {
     "prod": "3.10.2",
-    "dev": "3.13.9"
+    "dev": "3.16.5"
   }
 }

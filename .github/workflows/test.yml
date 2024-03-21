@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fl-version: [3.10.x, 3.13.x]
+        fl-version: [3.10.x, 3.13.x, 3.16.x]
         fl-channel: [stable]
         dir:
           - "."
@@ -56,11 +56,7 @@ jobs:
 
       - name: 🧪 Run tests
         id: test
-        run: |
-          if test -d "test"; then
-            flutter test --coverage
-            echo "RESULT=tested" >> "${GITHUB_OUTPUT}"
-          fi
+        run: flutter test --coverage
 
       - name: 📝 Upload coverage to codecov
         if: ${{steps.test.outputs.RESULT == 'tested'}}

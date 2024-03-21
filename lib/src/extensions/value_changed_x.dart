@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 extension ValueChangedX<T> on ValueChanged<T> {
   /// Prevent callback from being called too often.
   ///
-  /// Example:
+  /// {@tool snippet}
   /// ```dart
   /// TextField(
   ///   onChanged: (text) {
@@ -14,9 +14,6 @@ extension ValueChangedX<T> on ValueChanged<T> {
   ///   }.debounce(),
   /// );
   /// ```
-  ///
-  /// {@tool dartpad}
-  /// ** See code in example/lib/src/extensions/value_changed_x.dart **
   /// {@end-tool}
   ValueChanged<T> debounce({
     Duration delay = const Duration(milliseconds: 500),
