@@ -1,10 +1,10 @@
 {
   "flutter": "3.10.2",
-  "updateVscodeSettings": true,
-  "updateGitIgnore": true,
-  "runPubGetOnSdkChanges": true,
   "flavors": {
     "prod": "3.10.2",
     "dev": "3.16.5"
-  }
+  },
+  "runPubGetOnSdkChanges": true,
+  "updateVscodeSettings": true,
+  "updateGitIgnore": true
 }
