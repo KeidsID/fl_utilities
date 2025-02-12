@@ -1,4 +1,6 @@
-# 2.0.1
+# Changelog
+
+## 2.0.1
 
 - feat: `CustomListViewDelegate`, default item delegate for the `CustomListView`
   children. Used on `CustomListView.viewDelegate`.
@@ -6,6 +8,7 @@
   `CustomListView.viewDelegate`.
 
   Instead of:
+
   ```dart
   CustomListView(
     crossAxisAlignment: CustomListViewItemAlignment.end,
@@ -13,6 +16,7 @@
   ```
 
   Do:
+
   ```dart
   CustomListView(
     viewDelegate: CustomListViewDelegate(
@@ -24,11 +28,11 @@
   );
   ```
 
-# 2.0.0
+## 2.0.0
 
 ### Added
 
-- `CustomListView], a custom `ListView` with customizeable children.
+- `CustomListView], a custom`ListView` with customizeable children.
 - `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
 - `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
   `CustomListView`.
@@ -39,7 +43,7 @@
 
 - `SizedScrollableArea`
 
-## Breaking Changes
+### Breaking Changes
 
 The main reason why `SizedScrollableArea` exist because there's some cases that
 we need to modify the `ListView` item cross axis length, but we still wanted the
@@ -102,16 +106,16 @@ But why replace `SizedScrollableArea` with `CustomListView`?
   );
   ```
 
-# 1.0.0 - Initial Release
+## 1.0.0 - Initial Release
 
-## Added
+### Added
 
 - Updated docs.
 - More examples.
 
-# 0.1.1
+## 0.1.1
 
-## Fixed
+### Fixed
 
 - `TextX.applyOpacity` invalid style reference for null style `Text`.
 
@@ -120,11 +124,11 @@ But why replace `SizedScrollableArea` with `CustomListView`?
 - Add `TextStyleX.applyOpacity`, extension on `TextStyle` to apply opacity.
 - Update docs.
 
-# 0.1.0
+## 0.1.0
 
-## Added
+### Added
 
-### Extensions
+#### Extensions
 
 - on `BuildContext`:
 
@@ -142,16 +146,16 @@ But why replace `SizedScrollableArea` with `CustomListView`?
 - on `ValueChanged`:
   - `debounce`, prevent callback from being called too often.
 
-### Widgets
+#### Widgets
 
 - `SizedScrollableArea`, a scrollable area that can be sized. It act as extra
   scrollable area (which detect touch and mouse wheel pointer) if your
   `Scrollable` widget must have fixed size.
 
-### Others
+#### Misc
 
 - `DialogPage`, utilities for "go_router" package to show dialog. Did'nt depend
   on "go_router" package so "fl_utils" can be used without it.
 
 - `useUrlPathStrategy`, use path url strategy to remove hash from url path
-  (https://github.com/flutter/flutter/issues/89763).
+  (<https://github.com/flutter/flutter/issues/89763>).
