@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+flutter analyze || {
+  echo "Flutter analyze failed. Trying run on fvm..."
+  fvm flutter analyze
+}
+
+flutter test || {
+  echo "Flutter test failed. Trying run on fvm..."
+  fvm flutter test
+}
