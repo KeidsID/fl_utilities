@@ -10,13 +10,13 @@ Future<void> pumpTest(
   bool reverse = false,
   double? itemExtent,
   Widget? prototypeItem,
-  CustomListViewDelegate? viewDelegate,
-  List<CustomListViewItemDelegate> children = const [],
+  FlexItemListViewDelegate viewDelegate = const FlexItemListViewDelegate(),
+  List<FlexItemListViewItem> children = const [],
 }) async {
   await tester.pumpWidget(MaterialApp(
     home: Directionality(
       textDirection: textDirection,
-      child: CustomListView(
+      child: FlexItemListView(
         scrollDirection: scrollDirection,
         reverse: reverse,
         itemExtent: itemExtent,
@@ -30,10 +30,11 @@ Future<void> pumpTest(
   await tester.pump(const Duration(seconds: 5));
 }
 
-CustomListViewItem getItem(WidgetTester tester, {bool last = false}) {
-  final finder = find.byType(CustomListViewItem);
+FlexItemListViewItemImpl getItem(WidgetTester tester, {bool last = false}) {
+  final finder = find.byType(FlexItemListViewItemImpl);
 
-  return tester.widget<CustomListViewItem>(last ? finder.last : finder.first);
+  return tester
+      .widget<FlexItemListViewItemImpl>(last ? finder.last : finder.first);
 }
 
 Container getContainer(WidgetTester tester, {bool last = false}) {
@@ -49,17 +50,17 @@ SizedBox getSizedBox(WidgetTester tester, {bool last = false}) {
 }
 
 void main() {
-  group('CustomListView', () {
+  group('FlexItemListView', () {
     testWidgets('.builder - supports null items', (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(
-        home: CustomListView.builder(
+        home: FlexItemListView.builder(
           itemCount: 42,
           itemBuilder: (BuildContext context, int index) {
             if (index == 5) {
               return null;
             }
 
-            return const CustomListViewItemDelegate(child: Text('item'));
+            return const FlexItemListViewItem(child: Text('item'));
           },
         ),
       ));
@@ -70,17 +71,17 @@ void main() {
     testWidgets('.separated - supports null items in itemBuilder',
         (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(
-        home: CustomListView.separated(
+        home: FlexItemListView.separated(
           itemCount: 42,
           separatorBuilder: (BuildContext context, int index) {
-            return const CustomListViewItemDelegate(child: Text('separator'));
+            return const FlexItemListViewItem(child: Text('separator'));
           },
           itemBuilder: (BuildContext context, int index) {
             if (index == 5) {
               return null;
             }
 
-            return const CustomListViewItemDelegate(child: Text('item'));
+            return const FlexItemListViewItem(child: Text('item'));
           },
         ),
       ));
@@ -90,14 +91,14 @@ void main() {
     });
   });
 
-  group('CustomListViewItem', () {
+  group('FlexItemListViewItem', () {
     testWidgets('- should sized correctly', (tester) async {
-      const List<CustomListViewItemDelegate> children = [
-        CustomListViewItemDelegate(
+      const List<FlexItemListViewItem> children = [
+        FlexItemListViewItem(
           mainAxisLength: 160.0,
           crossAxisLength: 320.0,
         ),
-        CustomListViewItemDelegate(mainAxisLength: 160.0),
+        FlexItemListViewItem(mainAxisLength: 160.0),
       ];
 
       await pumpTest(tester, children: children);
@@ -135,19 +136,19 @@ void main() {
 
     testWidgets('- should aligned correctly', (tester) async {
       await pumpTest(tester, children: const [
-        CustomListViewItemDelegate.square(dimension: 160.0),
+        FlexItemListViewItem.square(dimension: 160.0),
       ]);
 
       expect(getContainer(tester).alignment, Alignment.center);
 
-      const List<CustomListViewItemDelegate> children = [
-        CustomListViewItemDelegate.square(
+      const List<FlexItemListViewItem> children = [
+        FlexItemListViewItem.square(
           dimension: 160.0,
-          crossAxisAlignment: CustomListViewItemAlignment.start,
+          crossAxisAlignment: FlexItemListViewAlignment.start,
         ),
-        CustomListViewItemDelegate.square(
+        FlexItemListViewItem.square(
           dimension: 160.0,
-          crossAxisAlignment: CustomListViewItemAlignment.end,
+          crossAxisAlignment: FlexItemListViewAlignment.end,
         ),
       ];
 
@@ -202,21 +203,21 @@ void main() {
         'should return true if delegate "crossAxisLength" is null or "crossAxisAlignment" is stretch',
         (tester) async {
           await pumpTest(tester, itemExtent: 160.0, children: const [
-            CustomListViewItemDelegate(crossAxisLength: null),
+            FlexItemListViewItem(crossAxisLength: null),
           ]);
 
           expect(getItem(tester).isStretch, true);
 
           await pumpTest(tester, itemExtent: 160.0, children: const [
-            CustomListViewItemDelegate(
-              crossAxisAlignment: CustomListViewItemAlignment.stretch,
+            FlexItemListViewItem(
+              crossAxisAlignment: FlexItemListViewAlignment.stretch,
             ),
           ]);
 
           expect(getItem(tester).isStretch, true);
 
           await pumpTest(tester, children: const [
-            CustomListViewItemDelegate.square(dimension: 160.0),
+            FlexItemListViewItem.square(dimension: 160.0),
           ]);
 
           expect(getItem(tester).isStretch, false);
@@ -224,16 +225,16 @@ void main() {
       );
 
       testWidgets(
-        'should cause [CustomListViewItem] to build [SizedBox] if false',
+        'should cause [FlexItemListViewItem] to build [SizedBox] if false',
         (tester) async {
           await pumpTest(tester, itemExtent: 160.0, children: const [
-            CustomListViewItemDelegate(crossAxisLength: null),
+            FlexItemListViewItem(crossAxisLength: null),
           ]);
 
           expect(find.byType(SizedBox), findsNothing);
 
           await pumpTest(tester, children: const [
-            CustomListViewItemDelegate.square(dimension: 160.0),
+            FlexItemListViewItem.square(dimension: 160.0),
           ]);
 
           expect(find.byType(SizedBox), findsOneWidget);
@@ -242,9 +243,9 @@ void main() {
     });
 
     testWidgets(
-      'isExtended - should return true if [CustomListView.itemExtent] or [CustomListView.prototypeItem] is not null',
+      'isExtended - should return true if [FlexItemListView.itemExtent] or [FlexItemListView.prototypeItem] is not null',
       (tester) async {
-        const children = [CustomListViewItemDelegate.square(dimension: 160.0)];
+        const children = [FlexItemListViewItem.square(dimension: 160.0)];
 
         await pumpTest(tester, itemExtent: 160.0, children: children);
 
@@ -266,48 +267,48 @@ void main() {
   });
 
   test(
-    'CustomListViewItemDelegate - asserts on infinity "mainAxisLength"',
+    'FlexItemListViewItem - asserts on infinity "mainAxisLength"',
     () {
       expect(
-        () => CustomListViewItemDelegate(mainAxisLength: double.infinity),
+        () => FlexItemListViewItem(mainAxisLength: double.infinity),
         throwsAssertionError,
       );
 
       expect(
-        () => CustomListViewItemDelegate.square(dimension: double.infinity),
+        () => FlexItemListViewItem.square(dimension: double.infinity),
         throwsAssertionError,
       );
     },
   );
 
-  group('CustomListViewDelegate -', () {
+  group('FlexItemListViewDelegate -', () {
     test(
       'asserts on infinity "mainAxisLength"',
       () {
         expect(
-          () => CustomListViewDelegate(mainAxisLength: double.infinity),
+          () => FlexItemListViewDelegate(mainAxisLength: double.infinity),
           throwsAssertionError,
         );
       },
     );
 
     testWidgets(
-      '- should be used as default item delegate on [CustomListViewItem] widget',
+      '- should be used as default item delegate on [FlexItemListViewItem] widget',
       (tester) async {
         const expectedWidth = 200.0;
         const expectedHeight = 100.0;
-        const expectedCrossAxisAlignment = CustomListViewItemAlignment.start;
+        const expectedCrossAxisAlignment = FlexItemListViewAlignment.start;
 
         await pumpTest(
           tester,
-          viewDelegate: const CustomListViewDelegate(
+          viewDelegate: const FlexItemListViewDelegate(
             mainAxisLength: expectedHeight,
             crossAxisLength: expectedWidth,
             crossAxisAlignment: expectedCrossAxisAlignment,
           ),
           children: [
-            const CustomListViewItemDelegate(child: Card()),
-            const CustomListViewItemDelegate(child: Card()),
+            const FlexItemListViewItem(child: Card()),
+            const FlexItemListViewItem(child: Card()),
           ],
         );
 

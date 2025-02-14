@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 
 import 'package:fl_utilities/fl_utilities.dart';
 
-void main() => runApp(const CustomListViewExampleApp());
+void main() => runApp(const MyApp());
 
-class CustomListViewExampleApp extends StatefulWidget {
-  const CustomListViewExampleApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  State<CustomListViewExampleApp> createState() =>
-      _CustomListViewExampleAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _CustomListViewExampleAppState extends State<CustomListViewExampleApp> {
-  bool isVertDirection = true;
-  bool isReversed = false;
-  CustomListViewItemAlignment crossAxisAlignment =
-      CustomListViewItemAlignment.center;
+class _MyAppState extends State<MyApp> {
+  Axis scrollDirection = Axis.vertical;
+  bool reverse = false;
+  FlexItemListViewAlignment crossAxisAlignment =
+      FlexItemListViewAlignment.center;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +32,9 @@ class _CustomListViewExampleAppState extends State<CustomListViewExampleApp> {
           PointerDeviceKind.mouse,
         },
       ),
+
       home: Scaffold(
-        appBar: AppBar(title: const Text('CustomListView Example')),
+        appBar: AppBar(title: const Text('FlexItemListView Example')),
         body: SizedBox.expand(
           child: Column(
             children: [
@@ -46,58 +46,49 @@ class _CustomListViewExampleAppState extends State<CustomListViewExampleApp> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      setState(() => isVertDirection = !isVertDirection);
-                    },
-                    child: Text(
-                      isVertDirection
-                          ? 'scrollDirection: Axis.vertical'
-                          : 'scrollDirection: Axis.horizontal',
-                    ),
+                    onPressed: () => setState(() {
+                      scrollDirection == Axis.vertical
+                          ? scrollDirection = Axis.horizontal
+                          : scrollDirection = Axis.vertical;
+                    }),
+                    child: Text("scrollDirection: $scrollDirection"),
                   ),
 
                   //
                   ElevatedButton(
-                    onPressed: () => setState(() => isReversed = !isReversed),
-                    child: Text(
-                      isReversed ? 'reverse: true' : 'reverse: false',
-                    ),
+                    onPressed: () => setState(() => reverse = !reverse),
+                    child: Text("reverse: $reverse"),
                   ),
 
                   //
-                  DropdownButton<CustomListViewItemAlignment>(
+                  DropdownButton<FlexItemListViewAlignment>(
                     value: crossAxisAlignment,
                     onChanged: (value) => setState(() {
                       crossAxisAlignment = value!;
                     }),
-                    items: CustomListViewItemAlignment.values.map((e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: Text('$e'),
-                      );
+                    items: FlexItemListViewAlignment.values.map((e) {
+                      return DropdownMenuItem(value: e, child: Text('$e'));
                     }).toList(),
                   )
                 ],
               ),
               const Divider(),
               Expanded(
-                child: CustomListView.builder(
-                  scrollDirection:
-                      isVertDirection ? Axis.vertical : Axis.horizontal,
-                  reverse: isReversed,
+                child: FlexItemListView.builder(
+                  scrollDirection: scrollDirection,
+                  reverse: reverse,
                   padding: const EdgeInsets.all(16.0),
-                  viewDelegate: CustomListViewDelegate(
+                  viewDelegate: FlexItemListViewDelegate(
                     mainAxisLength: 160.0,
                     crossAxisLength: 240.0,
                     crossAxisAlignment: crossAxisAlignment,
                   ),
-                  itemCount: 100,
-                  itemBuilder: (_, index) => CustomListViewItemDelegate(
+                  itemCount: 20,
+                  itemBuilder: (_, index) => FlexItemListViewItem(
                     child: Card(
                       clipBehavior: Clip.hardEdge,
                       child: InkWell(
-                        onTap: () {},
-                        child: Center(child: Text('#$index')),
+                        child: Center(child: Text('Item ${index + 1}')),
                       ),
                     ),
                   ),
