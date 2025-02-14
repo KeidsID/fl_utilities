@@ -13,15 +13,15 @@ extension ValueChangedX<T> on ValueChanged<T> {
   ///   }.debounce(),
   /// );
   /// ```
-  ValueChanged<T> debounce({
-    Duration delay = const Duration(milliseconds: 500),
-  }) {
+  ValueChanged<T> debounce([
+    Duration duration = const Duration(milliseconds: 500),
+  ]) {
     Timer? timer;
 
     return (T value) {
       if (timer != null) timer!.cancel();
 
-      timer = Timer(delay, () => this(value));
+      timer = Timer(duration, () => this(value));
     };
   }
 }

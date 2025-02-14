@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 
 import 'package:fl_utilities/fl_utilities.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const FlexItemListViewApp());
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class FlexItemListViewApp extends StatefulWidget {
+  const FlexItemListViewApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<FlexItemListViewApp> createState() => _FlexItemListViewAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _FlexItemListViewAppState extends State<FlexItemListViewApp> {
   Axis scrollDirection = Axis.vertical;
   bool reverse = false;
   FlexItemListViewAlignment crossAxisAlignment =

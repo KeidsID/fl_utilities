@@ -180,7 +180,7 @@ void main() {
         final actualMediaQuery = context.mediaQuery;
 
         expect(actualMediaQuery, expectedMediaQuery);
-        expect(actualMediaQuery?.size, expectedSize);
+        expect(actualMediaQuery.size, expectedSize);
       },
     );
 

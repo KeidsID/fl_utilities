@@ -34,13 +34,13 @@ This package depend on SDKs so it can be used in any Flutter project.
 
 Add `fl_utilities` to your dependencies.
 
-```
+```bash
 flutter add fl_utilities
 ```
 
 and that's it! You're good to go.
 
-> Please note that there's no support for Flutter SDK below 3.10
+> Please note that there's no support for Flutter SDK below 3.10.x
 
 ## Usage
 

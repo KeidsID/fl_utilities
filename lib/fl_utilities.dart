@@ -1,5 +1,5 @@
-/// Simple flutter utilities such as shorthands extension on [BuildContext],
-/// `debounce` extension on [ValueChanged],`SizedScrollableArea` widget, and more.
+/// Simple flutter utilities such as shorthands on [BuildContext],
+/// `debounce` extension on [ValueChanged], and more.
 library fl_utilities;
 
 export 'src/extensions/build_context_x.dart';

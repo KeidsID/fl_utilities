@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 extension TextX on Text {
   /// Creates a copy of this [Text] replacing the [TextStyle.color] opacity.
   ///
-  /// Better performance than wrapping [Text] with [Opacity].
+  /// Used to avoid [Opacity] usage.
   ///
   /// [opacity] should be a value between 0.0 and 1.0.
   ///
