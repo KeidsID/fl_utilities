@@ -49,8 +49,19 @@ extension BuildContextX on BuildContext {
   /// [MediaQuery.devicePixelRatioOf] shorthand.
   double get mediaDevicePixelRatio => MediaQuery.devicePixelRatioOf(this);
 
+  /// Deprecated. Will be removed in a future version of Flutter.
+  /// Use [mediaTextScaler] instead.
+  ///
   /// [MediaQuery.textScaleFactorOf] shorthand.
+  @Deprecated(
+    'Use mediaTextScaler instead. '
+    'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+    'This feature was deprecated after SDK v3.12.0-2.0.pre.',
+  )
   double get mediaTextScaleFactor => MediaQuery.textScaleFactorOf(this);
+
+  /// [MediaQuery.textScalerOf] shorthand.
+  TextScaler get mediaTextScaler => MediaQuery.textScalerOf(this);
 
   /// [MediaQuery.platformBrightnessOf] shorthand.
   Brightness get mediaPlatformBrightness =>

@@ -13,11 +13,14 @@ and the Flutter guide for
 
 # fl_utilities
 
-![Dart version](https://img.shields.io/badge/SDK-^3.0.0-red?style=flat&logo=dart&logoColor=2cb8f7&labelColor=333333&color=01579b)
-![Flutter](https://img.shields.io/badge/SDK-^3.10.0-red?style=flat&logo=flutter&logoColor=2cb8f7&labelColor=333333&color=01579b)
-![pub points](https://img.shields.io/pub/points/fl_utilities?labelColor=333333&color=01579b)
+[dart-badge]: https://img.shields.io/badge/SDK-^3.1.0-red?style=flat&logo=dart&logoColor=2cb8f7&labelColor=333333&color=01579b
+[fl-badge]: https://img.shields.io/badge/SDK-^3.13.0-red?style=flat&logo=flutter&logoColor=2cb8f7&labelColor=333333&color=01579b
+[pub-points-badge]: https://img.shields.io/pub/points/fl_utilities?labelColor=333333&color=01579b&logo=dart&logoColor=2cb8f7
 
-[![Test](https://github.com/KeidsID/fl_utilities/actions/workflows/test.yml/badge.svg)](https://github.com/KeidsID/fl_utilities/actions/workflows/test.yml)
+![Dart version][dart-badge]
+![Flutter][fl-badge]
+![pub points][pub-points-badge]
+
 [![codecov](https://codecov.io/gh/KeidsID/fl_utilities/graph/badge.svg?token=PNFMB749KY)](https://codecov.io/gh/KeidsID/fl_utilities)
 
 Simple flutter utilities such as shorthands extension on [BuildContext],
@@ -40,7 +43,7 @@ flutter add fl_utilities
 
 and that's it! You're good to go.
 
-> Please note that there's no support for Flutter SDK below 3.10.x
+> Please note that there's no support for Flutter SDK below v3.
 
 ## Usage
 
