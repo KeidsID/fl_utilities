@@ -1,0 +1,60 @@
+name: 🪲 Bug Report
+description: Report a bug
+title: "bug:"
+labels: ["bug"]
+assignees: ["KeidsID"]
+body:
+  - id: severity
+    type: dropdown
+    attributes:
+      label: "Severity Level"
+      options:
+        - "severity-1 (Critical)"
+        - "severity-2 (Minor)"
+        - "severity-3 (Trivial)"
+    validations:
+      required: true
+  - id: used-sdk
+    type: textarea
+    attributes:
+      label: Used Flutter SDK Versions
+      description: What Flutter SDK versions are you using?
+    validations:
+      required: true
+  - id: description
+    type: textarea
+    attributes:
+      label: Description
+      description: What is the issue?
+    validations:
+      required: true
+  - id: reproduce-steps
+    type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: How can we reproduce the issue?
+      placeholder: |
+        1. Go to page X
+        2. Click here
+        3. Look there
+    validations:
+      required: true
+  - id: expected-results
+    type: textarea
+    attributes:
+      label: Expected Results
+      description: What do you expect to happen?
+    validations:
+      required: true
+  - id: actual-results
+    type: textarea
+    attributes:
+      label: Actual Results
+      description: What is actually happening?
+    validations:
+      required: true
+  - id: additional-media
+    type: textarea
+    attributes:
+      label: Additional Images/Videos
+      description: Provide screenshots or videos that may help showcase the issue
