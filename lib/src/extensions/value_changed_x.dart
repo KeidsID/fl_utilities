@@ -7,7 +7,10 @@ extension ValueChangedX<T> on ValueChanged<T> {
   /// Prevent callback from being called too often.
   ///
   /// ```dart
-  /// TextField(
+  /// import "package:flutter/material.dart";
+  /// import "package:fl_utilities/fl_utilities.dart";
+  ///
+  /// final myWidget = TextField(
   ///   onChanged: (text) {
   ///     debugPrint('Called after half a second of not typing');
   ///   }.debounce(),

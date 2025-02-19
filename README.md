@@ -23,15 +23,15 @@ and the Flutter guide for
 
 [![codecov](https://codecov.io/gh/KeidsID/fl_utilities/graph/badge.svg?token=PNFMB749KY)](https://codecov.io/gh/KeidsID/fl_utilities)
 
-Simple flutter utilities such as shorthands extension on [BuildContext],
+[BuildContext]: https://api.flutter.dev/flutter/widgets/BuildContext-class.html
+[ValueChanged]: https://api.flutter.dev/flutter/foundation/ValueChanged.html
+
+Simple Flutter utilities such as shorthands extension on [BuildContext],
 `debounce` extension on [ValueChanged], and more.
 
-This package depend on SDKs so it can be used in any Flutter project.
+This package only depend on SDKs so it can be used in any Flutter project.
 
-[api-ref]:
-  https://pub.dev/documentation/fl_utilities/latest/fl_utilities/fl_utilities-library.html
-
-- [API Reference][api-ref]
+> Please note that there's no support for Flutter SDK below v3 for now.
 
 ## Getting started
 
@@ -43,35 +43,35 @@ flutter add fl_utilities
 
 and that's it! You're good to go.
 
-> Please note that there's no support for Flutter SDK below v3.
-
 ## Usage
 
-[BuildContext] shorthands extension:
+- [BuildContext] shorthands extension:
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:fl_utilities/fl_utilities.dart';
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:fl_utilities/fl_utilities.dart';
+  
+  final myWidget = Builder(builder: (context) {
+    context.theme; // instead of `Theme.of(context)`
+    context.mediaQuery; // instead of `MediaQuery.of(context)`
+  
+    return const Placeholder();
+  });
+  ```
 
-final myWidget = Builder(builder: (context) {
-  context.theme; // instead of `Theme.of(context)`
-  context.mediaQuery; // instead of `MediaQuery.of(context)`
+- debounce extension on [ValueChanged]:
 
-  return const Placeholder();
-});
-```
+  ```dart
+  import 'package:flutter/material.dart';
+  import 'package:fl_utilities/fl_utilities.dart';
+  
+  final myWidget = TextField(
+    onChanged: (text) {
+      debugPrint('Called after half a second of not typing');
+    }.debounce(),
+  );
+  ```
 
-debounce extension on [ValueChanged]:
+[Docs-Page]: https://docs.page/KeidsID/fl_utilities
 
-```dart
-import 'package:flutter/material.dart';
-import 'package:fl_utilities/fl_utilities.dart';
-
-final myWidget = TextField(
-  onChanged: (text) {
-    debugPrint('Called after half a second of not typing');
-  }.debounce(),
-);
-```
-
-Visit [API Reference][api-ref] for more utilities.
+Visit [Docs-Page] for more utilities.

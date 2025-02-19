@@ -22,26 +22,34 @@ typedef IndexedFlexItemListViewBuilder = FlexItemListViewItem Function(
 /// Unlike the [ListView] that force its children cross axis length to stretch,
 /// this widget can manipulate the cross axis length of the item.
 ///
+/// This widget is useful when you need to display a list of widgets with
+/// different sizes, but still want to presist the scrollbar position.
+///
 /// ```dart
-/// FlexItemListView(
+/// import "package:flutter/material.dart";
+/// import "package:fl_utilities/fl_utilities.dart";
+///
+/// final myWidget = FlexItemListView(
 ///   // adjust default item delegate here
 ///   viewDelegate: FlexItemListViewDelegate(
 ///     mainAxisLength: 200.0,
 ///     crossAxisLength: 400.0,
 ///
 ///     // alignment can also be specified
-///     crossAxisAlignment: FlexItemListViewItemAlignment.center,
+///     crossAxisAlignment: FlexItemListViewAlignment.center,
 ///   ),
 ///   children: [
-///     FlexItemListViewItemDelegate(
+///     FlexItemListViewItem(
 ///       // overrides default
 ///       mainAxisLength: 400.0,
 ///       crossAxisLength: 200.0,
-///       crossAxisAlignment: FlexItemListViewItemAlignment.start,
+///       crossAxisAlignment: FlexItemListViewAlignment.start,
 ///       child: Text('Title'), // actual item that will be displayed
 ///     ),
-///     FlexItemListViewItemDelegate(child: Card()),
+///     FlexItemListViewItem(child: Card()),
 ///   ],
+///   // Or you can do mapping for existing list of widgets.
+///   // children: items.map((item) => FlexItemListViewItem(child: item)).toList(),
 /// );
 /// ```
 ///

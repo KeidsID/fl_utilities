@@ -1,8 +1,8 @@
 part of "../modules.dart";
 
-/// [FlexItemListViewItemImpl] delegate base.
-abstract base class _FlexItemListViewItemDelegate {
-  const _FlexItemListViewItemDelegate({
+/// [FlexItemListView] delegate base.
+abstract base class _FlexItemListViewBaseDelegate {
+  const _FlexItemListViewBaseDelegate({
     this.mainAxisLength,
     this.crossAxisLength,
   }) : assert(mainAxisLength != double.infinity);
@@ -11,7 +11,7 @@ abstract base class _FlexItemListViewItemDelegate {
   /// This constructor will use [dimension] on both [mainAxisLength] and
   /// [crossAxisLength].
   /// {@endtemplate}
-  const _FlexItemListViewItemDelegate.square({
+  const _FlexItemListViewBaseDelegate.square({
     double? dimension,
   })  : assert(dimension != double.infinity),
         mainAxisLength = dimension,
@@ -75,7 +75,7 @@ enum FlexItemListViewAlignment {
 /// See also:
 /// - [FlexItemListViewDelegate], default values for this delegate.
 /// {@endtemplate}
-final class FlexItemListViewItem extends _FlexItemListViewItemDelegate {
+final class FlexItemListViewItem extends _FlexItemListViewBaseDelegate {
   /// {@macro fl_utilities.widgets.FlexItemListViewItemDelegate}
   const FlexItemListViewItem({
     this.key,
@@ -108,7 +108,7 @@ final class FlexItemListViewItem extends _FlexItemListViewItemDelegate {
 ///
 /// Use this instead applying delegate values for each item.
 /// {@endtemplate}
-final class FlexItemListViewDelegate extends _FlexItemListViewItemDelegate {
+final class FlexItemListViewDelegate extends _FlexItemListViewBaseDelegate {
   /// {@macro fl_utilities.widgets.FlexItemListViewDelegate}
   const FlexItemListViewDelegate({
     super.mainAxisLength,

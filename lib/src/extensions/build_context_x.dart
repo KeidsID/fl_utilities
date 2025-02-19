@@ -38,7 +38,7 @@ extension BuildContextX on BuildContext {
 
   /// [MediaQuery.of] shorthand.
   ///
-  /// Feels heavy? try `context.media<property>` syntax to get only the
+  /// Feels heavy? try `context.media{Property}` syntax to get only the
   /// properties you need, e.g [mediaSize] which is [MediaQuery.sizeOf]
   /// shorthand.
   MediaQueryData get mediaQuery => MediaQuery.of(this);
