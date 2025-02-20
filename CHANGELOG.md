@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/KeidsID/fl_utilities/compare/fl_utilities-v3.0.0...fl_utilities-v3.0.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* add missing pubignore flu-5 ([#8](https://github.com/KeidsID/fl_utilities/issues/8)) ([56e3749](https://github.com/KeidsID/fl_utilities/commit/56e3749f1b5ca6227a411745a9262395ed6add64))
+
 ## [3.0.0](https://github.com/KeidsID/fl_utilities/compare/fl_utilities-v2.0.1...fl_utilities-v3.0.0) (2025-02-20)
 
 ### ⚠ BREAKING CHANGES
