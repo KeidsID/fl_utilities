@@ -65,7 +65,7 @@ jobs:
         run: flutter test --coverage
 
       - name: 📝 Upload coverage to codecov
-        if: ${{ matrix.fl-version != env.MIN_SDK_VERSION }}
+        if: ${{ matrix.fl-version == env.MIN_SDK_VERSION }}
         uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
