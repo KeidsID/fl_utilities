@@ -21,7 +21,7 @@ abstract class GitlintConfig {
     "src-widgets",
   ];
 
-  static const List<String> issuePrefixes = ["ds", "release"];
+  static const List<String> issuePrefixes = ["flu", "release"];
 }
 
 class PRConfig {
