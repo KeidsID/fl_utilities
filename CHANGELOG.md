@@ -81,17 +81,10 @@
 
 ### Added
 
-<<<<<<< HEAD
-* `CustomListView], a custom`ListView` with customizeable children.
-* `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
-* `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
-=======
-
 * `CustomListView], a custom`ListView` with customizeable children.
 * `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
 * `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
 
->>>>>>> main
   `CustomListView`.
 
 * `CustomListViewItem`, a widget implementation for
@@ -215,11 +208,6 @@ But why replace `SizedScrollableArea` with `CustomListView`?
 * `DialogPage`, utilities for "go_router" package to show dialog. Did'nt depend
   on "go_router" package so "fl_utils" can be used without it.
 
-<<<<<<< HEAD
-* `useUrlPathStrategy`, use path url strategy to remove hash from url path
-=======
-
 * `useUrlPathStrategy`, use path url strategy to remove hash from url path
 
->>>>>>> main
   (<https://github.com/flutter/flutter/issues/89763>).
