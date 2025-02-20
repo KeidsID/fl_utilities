@@ -1,10 +1,59 @@
 # Changelog
 
+## [3.0.0](https://github.com/KeidsID/fl_utilities/compare/fl_utilities-v2.0.1...fl_utilities-v3.0.0) (2025-02-20)
+
+### ⚠ BREAKING CHANGES
+
+* refactor!: remove [DialogPage] and [usePathUrlStrategy] since its not part of flutter SDK
+
+* refactor!: rename [CustomListView] into [FlexItemListView]
+
+  Functionality and API still same as the old one, only the name is changed and deprecated props are removed.
+
+  ```dart
+  import "package:flutter/material.dart";
+  import "package:fl_utilities/fl_utilities.dart";
+  
+  final myWidget = FlexItemListView(
+    // adjust default item delegate here
+    viewDelegate: FlexItemListViewDelegate(
+      mainAxisLength: 200.0,
+      crossAxisLength: 400.0,
+  
+      // alignment can also be specified
+      crossAxisAlignment: FlexItemListViewAlignment.center,
+    ),
+    children: [
+      FlexItemListViewItem(
+        // overrides default
+        mainAxisLength: 400.0,
+        crossAxisLength: 200.0,
+        crossAxisAlignment: FlexItemListViewAlignment.start,
+        child: Text('Title'), // actual item that will be displayed
+      ),
+      FlexItemListViewItem(child: Card()),
+    ],
+    // Or you can do mapping for existing list of widgets.
+    // children: items.map((item) => FlexItemListViewItem(child: item)).toList(),
+  );
+  
+  ```
+
+* feat: add `MediaQuery.<prop>Of` shorthands on [BuildContext]
+
+  So instead of `context.mediaQuery.size`, now you can do `context.mediaSize`
+
+* refactor: update SDK constraints
+
+* docs: add docs.page
+
+* chore: add github templates
+
 ## 2.0.1
 
-- feat: `CustomListViewDelegate`, default item delegate for the `CustomListView`
+* feat: `CustomListViewDelegate`, default item delegate for the `CustomListView`
   children. Used on `CustomListView.viewDelegate`.
-- _deprecated_: `CustomListView.crossAxisAlignment`, is now deprecated in favor of
+* _deprecated_: `CustomListView.crossAxisAlignment`, is now deprecated in favor of
   `CustomListView.viewDelegate`.
 
   Instead of:
@@ -32,16 +81,25 @@
 
 ### Added
 
-- `CustomListView], a custom`ListView` with customizeable children.
-- `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
-- `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
+<<<<<<< HEAD
+* `CustomListView], a custom`ListView` with customizeable children.
+* `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
+* `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
+=======
+
+* `CustomListView], a custom`ListView` with customizeable children.
+* `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
+* `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
+
+>>>>>>> main
   `CustomListView`.
-- `CustomListViewItem`, a widget implementation for
+
+* `CustomListViewItem`, a widget implementation for
   `CustomListViewItemDelegate`, not to be used directly.
 
 ### Removed
 
-- `SizedScrollableArea`
+* `SizedScrollableArea`
 
 ### Breaking Changes
 
@@ -51,15 +109,15 @@ scroll area fill the whole screen.
 
 But why replace `SizedScrollableArea` with `CustomListView`?
 
-- The `SizedScrollableArea` widget is too verbose (Need same controller to
+* The `SizedScrollableArea` widget is too verbose (Need same controller to
   control scroll).
-- The `CustomListView` widget is more flexible because it just a `ListView` with
+* The `CustomListView` widget is more flexible because it just a `ListView` with
   some extra features (such as manipulate cross axis length).
-- And actually `SizedScrollableArea` is not stable yet (too much bugs).
+* And actually `SizedScrollableArea` is not stable yet (too much bugs).
 
 ### Migrate Guide
 
-- `SizedScrollableArea` -> `CustomListView`
+* `SizedScrollableArea` -> `CustomListView`
 
   Before:
 
@@ -110,19 +168,19 @@ But why replace `SizedScrollableArea` with `CustomListView`?
 
 ### Added
 
-- Updated docs.
-- More examples.
+* Updated docs.
+* More examples.
 
 ## 0.1.1
 
 ### Fixed
 
-- `TextX.applyOpacity` invalid style reference for null style `Text`.
+* `TextX.applyOpacity` invalid style reference for null style `Text`.
 
 ## Others
 
-- Add `TextStyleX.applyOpacity`, extension on `TextStyle` to apply opacity.
-- Update docs.
+* Add `TextStyleX.applyOpacity`, extension on `TextStyle` to apply opacity.
+* Update docs.
 
 ## 0.1.0
 
@@ -130,32 +188,38 @@ But why replace `SizedScrollableArea` with `CustomListView`?
 
 #### Extensions
 
-- on `BuildContext`:
+* on `BuildContext`:
 
-  - `theme`, shorthand for `Theme.of(context)`.
-  - `colorScheme`, shorthand for `Theme.of(context).colorScheme`.
-  - `textTheme`, shorthand for `Theme.of(context).textTheme`.
-  - `mediaQuery`, shorthand for `MediaQuery.of(context)`.
-  - `scaffold`, shorthand for `Scaffold.of(context)`.
-  - `scaffoldMessenger`, shorthand for `ScaffoldMessenger.of(context)`.
+  * `theme`, shorthand for `Theme.of(context)`.
+  * `colorScheme`, shorthand for `Theme.of(context).colorScheme`.
+  * `textTheme`, shorthand for `Theme.of(context).textTheme`.
+  * `mediaQuery`, shorthand for `MediaQuery.of(context)`.
+  * `scaffold`, shorthand for `Scaffold.of(context)`.
+  * `scaffoldMessenger`, shorthand for `ScaffoldMessenger.of(context)`.
 
-- on `Text`:
+* on `Text`:
 
-  - `applyOpacity`, create a copy of `Text` with applied opacity.
+  * `applyOpacity`, create a copy of `Text` with applied opacity.
 
-- on `ValueChanged`:
-  - `debounce`, prevent callback from being called too often.
+* on `ValueChanged`:
+  * `debounce`, prevent callback from being called too often.
 
 #### Widgets
 
-- `SizedScrollableArea`, a scrollable area that can be sized. It act as extra
+* `SizedScrollableArea`, a scrollable area that can be sized. It act as extra
   scrollable area (which detect touch and mouse wheel pointer) if your
   `Scrollable` widget must have fixed size.
 
 #### Misc
 
-- `DialogPage`, utilities for "go_router" package to show dialog. Did'nt depend
+* `DialogPage`, utilities for "go_router" package to show dialog. Did'nt depend
   on "go_router" package so "fl_utils" can be used without it.
 
-- `useUrlPathStrategy`, use path url strategy to remove hash from url path
+<<<<<<< HEAD
+* `useUrlPathStrategy`, use path url strategy to remove hash from url path
+=======
+
+* `useUrlPathStrategy`, use path url strategy to remove hash from url path
+
+>>>>>>> main
   (<https://github.com/flutter/flutter/issues/89763>).
