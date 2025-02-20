@@ -3,11 +3,11 @@ name: 🧪 Test
 on:
   push:
     branches: [main]
-    paths: ["lib", "test"]
+    paths: ["lib/**", "test/**"]
 
   pull_request:
     branches: [main]
-    paths: ["lib", "test"]
+    paths: ["lib/**", "test/**"]
 
 concurrency:
   group: test-${{ github.ref }}
