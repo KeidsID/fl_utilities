@@ -1,4 +1,5 @@
 # Miscellaneous
+docs/
 examples/
 coverage/
 *.class
