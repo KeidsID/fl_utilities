@@ -38,9 +38,9 @@ jobs:
           channel: ${{ env.FL_CHANNEL }}
           cache: true
           cache-key: |
-            "fl-:channel:-v:version:-:os:-:arch:-pr-lint-${{ hashFiles('./pubspec.lock') }}"
+            "fl-:channel:-v:version:-:os:-:arch:-pr-lint-${{ hashFiles('./pubspec.yaml') }}"
           pub-cache-key: |
-            "fl-pub-:channel:-v:version:-:os:-:arch:-pr-lint-${{ hashFiles('./pubspec.lock') }}"
+            "fl-pub-:channel:-v:version:-:os:-:arch:-pr-lint-${{ hashFiles('./pubspec.yaml') }}"
 
       - name: 📦 Get dependencies
         run: flutter pub get
