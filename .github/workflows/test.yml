@@ -18,6 +18,9 @@ jobs:
     name: 🧪 Test
     runs-on: ubuntu-latest
 
+    env:
+      MIN_SDK_VERSION: 3.16.x
+
     strategy:
       fail-fast: false
       matrix:
@@ -62,4 +65,5 @@ jobs:
         run: flutter test --coverage
 
       - name: 📝 Upload coverage to codecov
+        if: ${{ matrix.fl-version == env.MIN_SDK_VERSION }}
         run: curl -s https://codecov.io/bash | bash
