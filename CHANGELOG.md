@@ -84,7 +84,9 @@
 * `CustomListView], a custom`ListView` with customizeable children.
 * `CustomListViewItemDelegate`, delegate to customize `CustomListView` item.
 * `CustomListViewItemAlignment`, an enum to control item cross axis alignment of
+
   `CustomListView`.
+
 * `CustomListViewItem`, a widget implementation for
   `CustomListViewItemDelegate`, not to be used directly.
 
@@ -207,4 +209,5 @@ But why replace `SizedScrollableArea` with `CustomListView`?
   on "go_router" package so "fl_utils" can be used without it.
 
 * `useUrlPathStrategy`, use path url strategy to remove hash from url path
+
   (<https://github.com/flutter/flutter/issues/89763>).
