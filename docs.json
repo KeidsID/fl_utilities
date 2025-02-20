@@ -1,0 +1,95 @@
+{
+  "name": "fl_utilities",
+  "description": "Simple Flutter Utilities Package",
+  "tabs": [
+    {
+      "id": "root",
+      "title": "README",
+      "href": "/"
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions",
+      "href": "/extensions"
+    },
+    {
+      "id": "widgets",
+      "title": "Widgets",
+      "href": "/widgets"
+    }
+  ],
+  "sidebar": [
+    {
+      "tab": "root",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/",
+          "icon": "rocket"
+        },
+        {
+          "title": "Extensions",
+          "href": "/extensions",
+          "icon": "puzzle-piece"
+        },
+        {
+          "title": "Widgets",
+          "href": "/widgets",
+          "icon": "shapes"
+        }
+      ]
+    },
+    {
+      "tab": "extensions",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/extensions",
+          "icon": "rocket"
+        }
+      ]
+    },
+    {
+      "tab": "extensions",
+      "group": "Extensions",
+      "pages": [
+        {
+          "title": "BuildContextX",
+          "href": "/extensions/build-context-x",
+          "icon": "puzzle-piece"
+        },
+        {
+          "title": "TextX",
+          "href": "/extensions/text-x",
+          "icon": "puzzle-piece"
+        },
+        {
+          "title": "ValueChangedX",
+          "href": "/extensions/value-changed-x",
+          "icon": "puzzle-piece"
+        }
+      ]
+    },
+    {
+      "tab": "widgets",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/widgets",
+          "icon": "rocket"
+        }
+      ]
+    },
+    {
+      "tab": "widgets",
+      "group": "Widgets",
+      "pages": [
+        {
+          "title": "FlexItemListView",
+          "href": "/widgets/flex-item-list-view",
+          "icon": "shapes"
+        }
+      ]
+    }
+  ]
+}

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_utilities/fl_utilities.dart';
 
-// more examples on https://github.com/KeidsID/fl_utils/tree/main/examples
-
 void main() => runApp(const MainApp());
 
 class MainApp extends StatefulWidget {

@@ -1,0 +1,66 @@
+# BuildContextX
+
+[BuildContext]: https://api.flutter.dev/flutter/widgets/BuildContext-class.html
+
+Extension on [BuildContext].
+
+Contains shorthands for flutter utilities.
+
+## Usage
+
+```dart
+import "package:flutter/material.dart";
+import "package:fl_utilities/fl_utilities.dart";
+
+final myWidget = Builder(builder: (context) {
+  context.theme; // instead of `Theme.of(context)`
+  context.textTheme; // instead of `Theme.of(context).textTheme`
+  context.mediaSize; // instead of `MediaQuery.sizeOf(context)`
+
+  return const Placeholder();
+});
+```
+
+## API
+
+### Getters
+
+- <Property name="theme" type="ThemeData">
+    [Theme.of]: https://api.flutter.dev/flutter/material/Theme/of.html
+
+    [Theme.of] shorthand.
+  </Property>
+
+- <Property name="colorScheme" type="ColorScheme">
+    `Theme.of(context).colorScheme` shorthand.
+  </Property>
+
+- <Property name="textTheme" type="TextTheme">
+    `Theme.of(context).textTheme` shorthand.
+  </Property>
+
+- <Property name="scaffold" type="ScaffoldState">
+    [Scaffold.of]: https://api.flutter.dev/flutter/material/Scaffold/of.html
+
+    [Scaffold.of] shorthand.
+  </Property>
+
+- <Property name="scaffoldMessenger" type="ScaffoldMessengerState">
+    [ScaffoldMessenger.of]: https://api.flutter.dev/flutter/material/ScaffoldMessenger/of.html
+
+    [ScaffoldMessenger.of] shorthand.
+  </Property>
+
+- <Property name="mediaQuery" type="MediaQueryData">
+    [MediaQuery.of]: https://api.flutter.dev/flutter/widgets/MediaQuery/of.html
+    [MediaQuery.sizeOf]: https://api.flutter.dev/flutter/widgets/MediaQuery/sizeOf.html
+
+    [MediaQuery.of] shorthand.
+
+    Feels heavy? try `context.media{Property}` syntax to get only the
+    properties you need, e.g [mediaSize] which is [MediaQuery.sizeOf] shorthand.
+  </Property>
+
+[api-ref]: https://pub.dev/documentation/fl_utilities/latest/fl_utilities/fl_utilities-library.html
+
+Visit [API Reference][api-ref] for detailed API docs.

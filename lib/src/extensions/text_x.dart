@@ -7,15 +7,13 @@ import 'package:flutter/material.dart';
 extension TextX on Text {
   /// Creates a copy of this [Text] replacing the [TextStyle.color] opacity.
   ///
-  /// Better performance than wrapping [Text] with [Opacity].
+  /// Used to avoid [Opacity] usage.
   ///
   /// [opacity] should be a value between 0.0 and 1.0.
   ///
-  /// {@tool snippet}
   /// ```dart
   /// Text('Hello World').applyOpacity(opacity: 0.5);
   /// ```
-  /// {@end-tool}
   ///
   /// WARNING: This method is create a new [Text] instance, so the [Text.key]
   /// will not be used. Try apply it on the [key] argument instead.
@@ -37,7 +35,7 @@ extension TextX on Text {
           locale: locale,
           softWrap: softWrap,
           overflow: overflow,
-          textScaleFactor: textScaleFactor,
+          textScaler: textScaler,
           maxLines: maxLines,
           semanticsLabel: semanticsLabel,
           textWidthBasis: textWidthBasis,
@@ -58,7 +56,7 @@ extension TextX on Text {
         locale: locale,
         softWrap: softWrap,
         overflow: overflow,
-        textScaleFactor: textScaleFactor,
+        textScaler: textScaler,
         maxLines: maxLines,
         semanticsLabel: semanticsLabel,
         textWidthBasis: textWidthBasis,
@@ -89,11 +87,9 @@ extension TextStyleX on TextStyle {
   ///
   /// [opacity] should be a value between 0.0 and 1.0.
   ///
-  /// {@tool snippet}
   /// ```dart
   /// TextStyle(color: Colors.red).applyOpacity(0.5);
   /// ```
-  /// {@end-tool}
   ///
   /// See also:
   /// - [TextX.applyOpacity], extension to apply opacity on [Text] widget.

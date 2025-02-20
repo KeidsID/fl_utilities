@@ -6,24 +6,25 @@ import 'package:flutter/material.dart';
 extension ValueChangedX<T> on ValueChanged<T> {
   /// Prevent callback from being called too often.
   ///
-  /// {@tool snippet}
   /// ```dart
-  /// TextField(
+  /// import "package:flutter/material.dart";
+  /// import "package:fl_utilities/fl_utilities.dart";
+  ///
+  /// final myWidget = TextField(
   ///   onChanged: (text) {
   ///     debugPrint('Called after half a second of not typing');
   ///   }.debounce(),
   /// );
   /// ```
-  /// {@end-tool}
-  ValueChanged<T> debounce({
-    Duration delay = const Duration(milliseconds: 500),
-  }) {
+  ValueChanged<T> debounce([
+    Duration duration = const Duration(milliseconds: 500),
+  ]) {
     Timer? timer;
 
     return (T value) {
       if (timer != null) timer!.cancel();
 
-      timer = Timer(delay, () => this(value));
+      timer = Timer(duration, () => this(value));
     };
   }
 }

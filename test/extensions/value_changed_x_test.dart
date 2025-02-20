@@ -10,7 +10,7 @@ void main() {
     test('should call only once after delay without further events', () async {
       final callbackState = ValueChangedState<String>();
       final debouncedCallback = callbackState.callback.debounce(
-        delay: const Duration(milliseconds: msDelay),
+        const Duration(milliseconds: msDelay),
       );
 
       // Call with debounce
@@ -36,7 +36,7 @@ void main() {
       () async {
         final callbackState = ValueChangedState<String>();
         final debouncedCallback = callbackState.callback.debounce(
-          delay: const Duration(milliseconds: msDelay),
+          const Duration(milliseconds: msDelay),
         );
 
         // Send initial event

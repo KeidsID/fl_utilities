@@ -16,8 +16,8 @@ class _ValueChangedXAppState extends State<ValueChangedXApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
+      theme: ThemeData(useMaterial3: true),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: AppBar(title: const Text('ValueChangedX.debounce Example')),
@@ -27,12 +27,16 @@ class _ValueChangedXAppState extends State<ValueChangedXApp> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                onChanged: (value) {
+                decoration: const InputDecoration(labelText: 'TextField'),
+                onChanged: (String value) {
                   setState(() => text = value);
                 }.debounce(),
               ),
               const SizedBox(height: 16.0),
-              Text('text (delay 500ms): \n$text', textAlign: TextAlign.center),
+              Text(
+                'Debounced text will be print below: \n\n$text',
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),

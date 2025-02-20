@@ -1,16 +1,42 @@
-name: Publish to pub.dev
+name: 📢 Publish to pub.dev
 
 on:
   push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
+    branches: [main]
 
 jobs:
+  release:
+    name: 🚀 Release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: 📚 Code Checkout
+        uses: actions/checkout@v4
+
+      - name: 🚀 Release
+        id: rp
+        uses: googleapis/release-please-action@v4
+        with:
+          manifest-file: release.manifest.json
+          config-file: release.config.json
+          include-component-in-tag: false
+
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      created_tag: ${{ steps.rp.outputs.tag_name }}
+
   publish:
+    name: 📢 Publish to pub.dev
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}
     strategy:
       fail-fast: false
       matrix:
-        fl-version: [3.13.x]
+        fl-version: [3.16.x]
         fl-channel: [stable]
         dir:
           - "."
@@ -32,6 +58,10 @@ jobs:
           flutter-version: ${{ matrix.fl-version }}
           channel: ${{ matrix.fl-channel }}
           cache: true
+          cache-key: |
+            fl-:channel:-v:version:-:os:-:arch:-publish-${{ hashFiles('./pubspec.yaml') }}
+          pub-cache-key: |
+            fl-pub-:channel:-v:version:-:os:-:arch:-publish-${{ hashFiles('./pubspec.yaml') }}
 
       - name: 📦 Install Dependencies
         run: flutter pub get

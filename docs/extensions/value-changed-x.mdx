@@ -1,0 +1,25 @@
+# ValueChangedX
+
+[ValueChanged]: https://api.flutter.dev/flutter/foundation/ValueChanged.html
+
+Extension on [ValueChanged].
+
+## API
+
+### Methods
+
+- <Property name="debounce" type="ValueChanged Function([Duration duration])">
+    Prevent callback from being called too often.
+
+    ```dart
+    import "package:flutter/material.dart";
+    import "package:fl_utilities/fl_utilities.dart";
+
+    final myWidget = TextField(
+      onChanged: (text) {
+        debugPrint('Called after half second of not typing');
+      }.debounce(),
+    );
+    ```
+
+  </Property>

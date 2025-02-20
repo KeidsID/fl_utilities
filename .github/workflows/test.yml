@@ -1,31 +1,33 @@
-name: Test
+name: 🧪 Test
 
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "**.md"
-      - "example/"
-      - "examples/"
+    paths: ["lib/**", "test/**"]
 
   pull_request:
-    types: [review_requested]
-    paths-ignore:
-      - "**.md"
-      - "example/"
-      - "examples/"
+    branches: [main]
+    paths: ["lib/**", "test/**"]
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+
+    env:
+      MIN_SDK_VERSION: 3.16.x
+
     strategy:
       fail-fast: false
       matrix:
-        fl-version: [3.10.x, 3.13.x, 3.16.x]
+        fl-version: [3.16.x, 3.19.x, 3.22.x]
         fl-channel: [stable]
         dir:
           - "."
-
-    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -44,6 +46,10 @@ jobs:
           flutter-version: ${{ matrix.fl-version }}
           channel: ${{ matrix.fl-channel }}
           cache: true
+          cache-key: |
+            fl-:channel:-v:version:-:os:-:arch:-test-${{ hashFiles('./pubspec.yaml') }}
+          pub-cache-key: |
+            fl-pub-:channel:-v:version:-:os:-:arch:-test-${{ hashFiles('./pubspec.yaml') }}
 
       - name: 📦 Get dependencies
         run: flutter pub get
@@ -51,8 +57,7 @@ jobs:
       - name: ✨ Check Formatting
         run: dart format lib --line-length 80 --set-exit-if-changed
 
-      - name: 🕵️ Analyze code
-        continue-on-error: true
+      - name: 🔍 Code Linting
         run: flutter analyze lib test
 
       - name: 🧪 Run tests
@@ -60,4 +65,11 @@ jobs:
         run: flutter test --coverage
 
       - name: 📝 Upload coverage to codecov
-        run: curl -s https://codecov.io/bash | bash
+        if: ${{ matrix.fl-version == env.MIN_SDK_VERSION }}
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          fail_ci_if_error: true
+          files: ./coverage/lcov.info
+          verbose: true

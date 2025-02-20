@@ -1,0 +1,214 @@
+# FlexItemListView
+
+[ListView]: https://api.flutter.dev/flutter/widgets/ListView-class.html
+
+[ListView] with customizable items.
+
+Unlike the flutter [ListView] that force its children cross axis
+length to stretch, this widget can manipulate the cross axis length of the
+item.
+
+This widget is useful when you need to display a list of widgets with
+different sizes, but still want to presist the scrollbar position.
+
+## Demo
+
+![demo](/assets/widgets/flex-item-list-view/demo.gif)
+
+## Usage
+
+```dart
+import "package:flutter/material.dart";
+import "package:fl_utilities/fl_utilities.dart";
+
+final myWidget = FlexItemListView(
+  // adjust default item delegate here
+  viewDelegate: FlexItemListViewDelegate(
+    mainAxisLength: 200.0,
+    crossAxisLength: 400.0,
+
+    // alignment can also be specified
+    crossAxisAlignment: FlexItemListViewAlignment.center,
+  ),
+  children: [
+    FlexItemListViewItem(
+      // overrides default
+      mainAxisLength: 400.0,
+      crossAxisLength: 200.0,
+      crossAxisAlignment: FlexItemListViewAlignment.start,
+      child: Text('Title'), // actual item that will be displayed
+    ),
+    FlexItemListViewItem(child: Card()),
+  ],
+  // Or you can do mapping for existing list of widgets.
+  // children: items.map((item) => FlexItemListViewItem(child: item)).toList(),
+);
+
+```
+
+## API
+
+- <Property name="FlexItemListView" type="ListView">
+    [ListView] with customizable items.
+
+    <Accordion title="Constructor Parameters">
+      <Property name="viewDelegate" type="FlexItemListViewDelegate" optional>
+        Default delegate for the items.
+      </Property>
+
+      ---
+
+      <Property name="children" type="List<FlexItemListViewItem>" optional>
+        List of items to display.
+      </Property>
+
+      ---
+
+      Rest of the [ListView] constructor  parameters.
+    </Accordion>
+
+    <Accordion title=".builder Constructor Parameters">
+      <Property name="viewDelegate" type="FlexItemListViewDelegate" optional>
+        Default delegate for the items.
+      </Property>
+
+      ---
+
+      <Property name="itemBuilder" type="FlexItemListViewItem? Function(BuildContext context, int index)" required>
+        Function to build items on demand.
+      </Property>
+
+      ---
+
+      [ListView.builder]: https://api.flutter.dev/flutter/widgets/ListView/ListView.builder.html
+
+      Rest of the [ListView.builder] constructor  parameters.
+    </Accordion>
+
+    <Accordion title=".separated Constructor Parameters">
+      <Property name="viewDelegate" type="FlexItemListViewDelegate" optional>
+        Default delegate for the items.
+      </Property>
+
+      ---
+
+      <Property name="itemBuilder" type="FlexItemListViewItem? Function(BuildContext context, int index)" required>
+        Function to build items on demand.
+      </Property>
+
+      ---
+
+      <Property name="separatorBuilder" type="FlexItemListViewItem Function(BuildContext context, int index)" required>
+        Function to build separator.
+      </Property>
+
+      ---
+
+      [ListView.separated]: https://api.flutter.dev/flutter/widgets/ListView/ListView.separated.html
+
+      Rest of the [ListView.separated] constructor  parameters.
+    </Accordion>
+
+  </Property>
+
+- <Property name="FlexItemListViewItem">
+    [FlexItemListView] children delegate.
+  
+    <Accordion title="Constructor Parameters">
+      <Property name="key" type="Key?" optional>
+        [FlexItemListView] item key.
+      </Property>
+  
+      ---
+  
+      <Property name="mainAxisLength" type="double?" optional>
+        The length of the item on the [FlexItemListView] main axis.
+      </Property>
+
+      ---
+
+      <Property name="crossAxisLength" type="double?" optional>
+        The length of the item on the [FlexItemListView] cross axis.
+      </Property>
+
+      ---
+
+      <Property name="crossAxisAlignment" type="FlexItemListViewAlignment" optional>
+        How the item should be placed along the cross axis.
+      </Property>
+
+      ---
+
+      <Property name="child" type="Widget?" optional>
+        Actual item that will be displayed.
+      </Property>
+
+    </Accordion>
+
+    <Accordion title=".square Constructor Parameters">
+      <Property name="key" type="Key?" optional>
+        [FlexItemListView] item key.
+      </Property>
+  
+      ---
+
+      <Property name="dimension" type="double?" optional>
+        Applied to both mainAxisLength and crossAxisLength.
+      </Property>
+
+      ---
+
+      <Property name="crossAxisAlignment" type="FlexItemListViewAlignment" optional>
+      How the item should be placed along the cross axis.
+      </Property>
+
+      ---
+
+      <Property name="child" type="Widget?" optional>
+        Actual item that will be displayed.
+      </Property>
+
+    </Accordion>
+
+  </Property>
+
+- <Property name="FlexItemListViewDelegate">
+    [FlexItemListView] children delegate default.
+  
+    <Accordion title="Constructor Parameters">
+      <Property name="mainAxisLength" type="double?" optional>
+        The length of the item on the [FlexItemListView] main axis.
+      </Property>
+
+      ---
+
+      <Property name="crossAxisLength" type="double?" optional>
+        The length of the item on the [FlexItemListView] cross axis.
+      </Property>
+
+      ---
+
+      <Property name="crossAxisAlignment" type="FlexItemListViewAlignment" optional>
+        How the item should be placed along the cross axis.
+      </Property>
+
+    </Accordion>
+
+    <Accordion title=".square Constructor Parameters">
+      <Property name="dimension" type="double?" optional>
+        Applied to both mainAxisLength and crossAxisLength.
+      </Property>
+
+      ---
+
+      <Property name="crossAxisAlignment" type="FlexItemListViewAlignment" optional>
+      How the item should be placed along the cross axis.
+      </Property>
+
+    </Accordion>
+
+  </Property>
+
+[api-ref]: https://pub.dev/documentation/fl_utilities/latest/fl_utilities/fl_utilities-library.html
+
+Visit [API Reference][api-ref] for detailed API docs.

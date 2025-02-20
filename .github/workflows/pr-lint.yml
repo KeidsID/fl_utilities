@@ -1,0 +1,99 @@
+name: 🔍 Pull Request Lint
+
+on:
+  pull_request:
+    types:
+      - assigned
+      - unassigned
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - labeled
+      - unlabeled
+      - ready_for_review
+
+concurrency:
+  group: pr-lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependencies:
+    name: 📦 Setup Dependencies
+    runs-on: ubuntu-latest
+
+    env:
+      FL_VERSION: 3.16.x
+      FL_CHANNEL: stable
+
+    steps:
+      - name: 📚 Code Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐦 Setup Flutter SDK
+        id: fl-setup
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FL_VERSION }}
+          channel: ${{ env.FL_CHANNEL }}
+          cache: true
+          cache-key: |
+            "fl-:channel:-v:version:-:os:-:arch:-pr-lint-${{ hashFiles('./pubspec.yaml') }}"
+          pub-cache-key: |
+            "fl-pub-:channel:-v:version:-:os:-:arch:-pr-lint-${{ hashFiles('./pubspec.yaml') }}"
+
+      - name: 📦 Get dependencies
+        run: flutter pub get
+
+    outputs:
+      fl-version: ${{ steps.fl-setup.outputs.VERSION }}
+      fl-channel: ${{ steps.fl-setup.outputs.CHANNEL }}
+      fl-cache-key: ${{ steps.fl-setup.outputs.CACHE-KEY }}
+      fl-pub-cache-key: ${{ steps.fl-setup.outputs.PUB-CACHE-KEY }}
+
+  pr-lint:
+    name: 🔍 PR Linting
+    needs: dependencies
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: 📚 Code Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Restore Dependencies
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{needs.dependencies.outputs.fl-version}}
+          channel: ${{needs.dependencies.outputs.fl-channel}}
+          cache: true
+          cache-key: ${{needs.dependencies.outputs.fl-cache-key}}
+          pub-cache-key: ${{needs.dependencies.outputs.fl-pub-cache-key}}
+
+      - name: ⚙️ Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: ⚙️ Setup DangerJs
+        run: |
+          npm install -g danger
+          dart pub global activate danger_dart
+
+      - name: 🔍 Lint Commits
+        env:
+          GH_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GH_PR_COMMITS: ${{ github.event.pull_request.commits }}
+        run: |
+          VERBOSE=true dart run commitlint_cli --from=${{ env.GH_PR_HEAD_SHA }}~${{ env.GH_PR_COMMITS }} --to=${{ env.GH_PR_HEAD_SHA }}
+
+      - name: 🔍 Lint Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          danger_dart ci --failOnErrors
