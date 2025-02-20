@@ -2,7 +2,7 @@ name: fl_utilities
 description:
   Simple Flutter utilities such as [BuildContext] shorthands extension,
   `debounce` extension on [ValueChanged], and more.
-version: 2.0.1
+version: 3.0.0
 repository: https://github.com/KeidsID/fl_utilities
 documentation: https://docs.page/KeidsID/fl_utilities
 
