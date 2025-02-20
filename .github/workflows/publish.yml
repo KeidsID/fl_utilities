@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fl-version: [3.13.x]
+        fl-version: [3.16.x]
         fl-channel: [stable]
         dir:
           - "."
