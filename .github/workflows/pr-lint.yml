@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      FL_VERSION: 3.10.x
+      FL_VERSION: 3.16.x
       FL_CHANNEL: stable
 
     steps:
