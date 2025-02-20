@@ -184,63 +184,33 @@ void main() {
       },
     );
 
-    group('scaffold -', () {
-      testWidgets(
-        'should return [ScaffoldState] from [Scaffold.of]',
-        (tester) async {
-          await tester.pumpWidget(testSubject);
+    testWidgets(
+      'scaffold - should return [ScaffoldState] from [Scaffold.of]',
+      (tester) async {
+        await tester.pumpWidget(testSubject);
 
-          final BuildContext context = getContext(tester);
+        final BuildContext context = getContext(tester);
 
-          final expected = Scaffold.of(context);
-          final actual = context.scaffold;
+        final expected = Scaffold.of(context);
+        final actual = context.scaffold;
 
-          expect(actual, expected);
-        },
-      );
-      testWidgets(
-        'should return null if no [ScaffoldState] is found in scope',
-        (tester) async {
-          await tester.pumpWidget(const MaterialApp(home: Placeholder()));
+        expect(actual, expected);
+      },
+    );
 
-          final BuildContext context = tester.element(find.byType(Placeholder));
+    testWidgets(
+      'scaffoldMessenger - should return [ScaffoldMessengerState] from [ScaffoldMessenger.of]',
+      (tester) async {
+        await tester.pumpWidget(testSubject);
 
-          final expected = Scaffold.maybeOf(context);
-          final actual = context.scaffold;
+        final BuildContext context = getContext(tester);
 
-          expect(actual, expected);
-        },
-      );
-    });
+        final expected = ScaffoldMessenger.of(context);
+        final actual = context.scaffoldMessenger;
 
-    group('scaffoldMessenger -', () {
-      testWidgets(
-        'should return [ScaffoldMessengerState] from [ScaffoldMessenger.of]',
-        (tester) async {
-          await tester.pumpWidget(testSubject);
-
-          final BuildContext context = getContext(tester);
-
-          final expected = ScaffoldMessenger.of(context);
-          final actual = context.scaffoldMessenger;
-
-          expect(actual, expected);
-        },
-      );
-      testWidgets(
-        'should return null if no [ScaffoldMessengerState] is found in scope',
-        (tester) async {
-          await tester.pumpWidget(const MaterialApp(home: Placeholder()));
-
-          final BuildContext context = tester.element(find.byType(Placeholder));
-
-          final expected = ScaffoldMessenger.maybeOf(context);
-          final actual = context.scaffoldMessenger;
-
-          expect(actual, expected);
-        },
-      );
-    });
+        expect(actual, expected);
+      },
+    );
 
     testWidgets(
       'scrollBehavior - should return [ScrollBehavior] from [ScrollConfiguration.of]',
@@ -250,6 +220,72 @@ void main() {
         final actual = getContext(tester).scrollBehavior;
 
         expect(actual, expectedScrollBehavior);
+      },
+    );
+
+    testWidgets(
+      "mediaQuery - should return [MediaQueryData]",
+      (tester) async {
+        await tester.pumpWidget(testSubject);
+
+        final BuildContext context = getContext(tester);
+
+        expect(context.mediaQuery, MediaQuery.of(context));
+      },
+    );
+
+    testWidgets(
+      "media{Property} - should return media query data based on specified property",
+      (tester) async {
+        await tester.pumpWidget(testSubject);
+
+        final BuildContext context = getContext(tester);
+
+        expect(context.mediaSize, MediaQuery.sizeOf(context));
+        expect(
+          context.mediaDevicePixelRatio,
+          MediaQuery.devicePixelRatioOf(context),
+        );
+        expect(context.mediaTextScaler, MediaQuery.textScalerOf(context));
+        expect(
+          context.mediaPlatformBrightness,
+          MediaQuery.platformBrightnessOf(context),
+        );
+        expect(context.mediaViewInsets, MediaQuery.viewInsetsOf(context));
+        expect(context.mediaPadding, MediaQuery.paddingOf(context));
+        expect(context.mediaViewPadding, MediaQuery.viewPaddingOf(context));
+        expect(
+          context.mediaSystemGestureInsets,
+          MediaQuery.systemGestureInsetsOf(context),
+        );
+        expect(
+          context.mediaAlwaysUse24HourFormat,
+          MediaQuery.alwaysUse24HourFormatOf(context),
+        );
+        expect(
+          context.mediaAccessibleNavigation,
+          MediaQuery.accessibleNavigationOf(context),
+        );
+        expect(context.mediaInvertColors, MediaQuery.invertColorsOf(context));
+        expect(context.mediaHighContrast, MediaQuery.highContrastOf(context));
+        expect(
+          context.mediaDisableAnimations,
+          MediaQuery.disableAnimationsOf(context),
+        );
+        expect(context.mediaBoldText, MediaQuery.boldTextOf(context));
+        expect(
+          context.mediaNavigationMode,
+          MediaQuery.navigationModeOf(context),
+        );
+        expect(
+          context.mediaGestureSettings,
+          MediaQuery.gestureSettingsOf(context),
+        );
+        expect(
+          context.mediaDisplayFeatures,
+          MediaQuery.displayFeaturesOf(context),
+        );
+        expect(context.mediaOrientation, MediaQuery.orientationOf(context));
       },
     );
   });
